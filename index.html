@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Model Benchmark Matrix</title>
+  <title>MiniMax H3 Video Model Benchmark</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -25,7 +25,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1440px;
       margin: 0 auto;
     }
 
@@ -35,7 +35,7 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       background: linear-gradient(to right, #38bdf8, #818cf8);
@@ -46,6 +46,12 @@
     p.subtitle {
       color: var(--text-muted);
       font-size: 0.95rem;
+    }
+
+    p.subtitle a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     .table-container {
@@ -61,13 +67,13 @@
       border-collapse: collapse;
       text-align: center;
       font-size: 0.85rem;
-      table-layout: fixed; /* Locks column widths so nothing shifts */
+      table-layout: fixed;
     }
 
     th, td {
-      padding: 10px 8px;
+      padding: 10px 4px;
       border: 1px solid var(--border);
-      min-width: 68px;
+      min-width: 72px;
     }
 
     th {
@@ -94,11 +100,11 @@
       justify-content: center;
       width: 100%;
       height: 100%;
-      padding: 4px 2px;
+      padding: 6px 2px;
       border-radius: 6px;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent; /* Reserves the 1px border space in advance */
+      border: 1px solid transparent;
       transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -116,6 +122,7 @@
     .run-id {
       font-size: 0.65rem;
       color: var(--text-muted);
+      margin-top: 2px;
     }
 
     .empty-cell {
@@ -144,7 +151,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 16px;
-      max-width: 800px;
+      max-width: 850px;
       width: 100%;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
@@ -176,7 +183,7 @@
     .video-container {
       background: #000;
       width: 100%;
-      min-height: 360px;
+      min-height: 380px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -184,7 +191,7 @@
 
     video {
       width: 100%;
-      max-height: 500px;
+      max-height: 520px;
       display: block;
     }
 
@@ -196,6 +203,8 @@
       background: #111827;
       font-size: 0.9rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
   </style>
 </head>
@@ -203,8 +212,13 @@
 
   <div class="container">
     <header>
-      <h1>Video Generation Benchmark Matrix</h1>
-      <p class="subtitle">Click any cell to play the generated video and inspect gen time.</p>
+      <h1>MiniMax H3 Video Generation Benchmark</h1>
+      <p class="subtitle">
+        Click any cell to play the generated video. Benchmarked with 
+        <a href="https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors" target="_blank" rel="noopener noreferrer">
+          Larry's Turbo v4 LoRA
+        </a> (8 Steps, RTX 5070 Ti).
+      </p>
     </header>
 
     <div class="table-container">
@@ -212,11 +226,10 @@
         <thead>
           <tr id="headerRow">
             <th class="sticky-col">MP \ Dur</th>
-            <!-- Durations 1s to 15s injected via JS -->
           </tr>
         </thead>
         <tbody id="tableBody">
-          <!-- Rows injected via JS -->
+          <!-- Rows dynamically generated -->
         </tbody>
       </table>
     </div>
@@ -231,25 +244,24 @@
       </div>
       <div class="video-container">
         <video id="modalVideo" controls autoplay loop playsinline>
-          <source id="videoSource" src="" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div>
       <div class="modal-footer">
-        <div id="modalMeta">Run ID: -</div>
+        <div id="modalMeta">File: -</div>
         <div id="modalTime">Gen Time: -</div>
       </div>
     </div>
   </div>
 
   <script>
-    // Configuration: adjust video file path pattern as needed
-    const getVideoUrl = (runId) => `./videos/${runId}.mp4`;
+    // URL builder targeting ./Videos/MiniMax_H3_XXXXX_.mp4
+    const getVideoUrl = (runId) => `./Videos/MiniMax_${runId}_.mp4`;
 
     const durations = Array.from({ length: 15 }, (_, i) => i + 1);
     const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "1.0MP"];
 
-    // Full benchmark dataset
+    // Full Benchmark Dataset (115 runs)
     const benchmarkData = {
       "0.1MP": { 1: { id: "H3_03684", time: "13s" }, 2: { id: "H3_03685", time: "12s" }, 3: { id: "H3_03686", time: "14s" }, 4: { id: "H3_03687", time: "17s" }, 5: { id: "H3_03688", time: "19s" }, 6: { id: "H3_03689", time: "22s" }, 7: { id: "H3_03690", time: "25s" }, 8: { id: "H3_03691", time: "27s" }, 9: { id: "H3_03692", time: "30s" }, 10: { id: "H3_03693", time: "33s" }, 11: { id: "H3_03694", time: "37s" }, 12: { id: "H3_03695", time: "39s" }, 13: { id: "H3_03696", time: "41s" }, 14: { id: "H3_03697", time: "43s" }, 15: { id: "H3_03698", time: "47s" } },
       "0.2MP": { 1: { id: "H3_03699", time: "15s" }, 2: { id: "H3_03700", time: "18s" }, 3: { id: "H3_03701", time: "21s" }, 4: { id: "H3_03702", time: "27s" }, 5: { id: "H3_03703", time: "29s" }, 6: { id: "H3_03704", time: "37s" }, 7: { id: "H3_03705", time: "41s" }, 8: { id: "H3_03706", time: "45s" }, 9: { id: "H3_03707", time: "54s" }, 10: { id: "H3_03708", time: "59s" }, 11: { id: "H3_03709", time: "68s" }, 12: { id: "H3_03710", time: "74s" }, 13: { id: "H3_03711", time: "88s" }, 14: { id: "H3_03712", time: "100s" }, 15: { id: "H3_03713", time: "98s" } },
@@ -271,7 +283,7 @@
       headerRow.appendChild(th);
     });
 
-    // Render Table Body
+    // Render Table Rows
     const tbody = document.getElementById("tableBody");
     resolutions.forEach(mp => {
       const tr = document.createElement("tr");
@@ -301,28 +313,29 @@
       tbody.appendChild(tr);
     });
 
-    // Modal Handlers
+    // Modal Control Logic
     const modal = document.getElementById("videoModal");
     const modalVideo = document.getElementById("modalVideo");
-    const videoSource = document.getElementById("videoSource");
 
     function openModal(mp, duration, runId, time) {
       document.getElementById("modalTitle").textContent = `${mp} @ ${duration}s Duration`;
-      document.getElementById("modalMeta").textContent = `Run ID: ${runId}`;
+      document.getElementById("modalMeta").textContent = `File: MiniMax_${runId}_.mp4`;
       document.getElementById("modalTime").textContent = `Gen Time: ${time}`;
       
-      videoSource.src = getVideoUrl(runId);
+      modalVideo.src = getVideoUrl(runId);
       modalVideo.load();
+      modalVideo.play().catch(err => console.log("Autoplay handled:", err));
+      
       modal.classList.add("active");
     }
 
     function closeModal() {
       modal.classList.remove("active");
       modalVideo.pause();
-      videoSource.src = "";
+      modalVideo.removeAttribute("src");
+      modalVideo.load();
     }
 
-    // Close on overlay click or Escape key
     modal.onclick = (e) => { if (e.target === modal) closeModal(); };
     window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   </script>
