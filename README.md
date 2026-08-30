@@ -12,7 +12,7 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 | :--- | :--- |
 | **Driver / OS** | Driver `610.74` / Windows 11 |
 | **GPU** | NVIDIA GeForce RTX 5070 Ti 16GB (`sm_120`) |
-| **System RAM** | 64GB DDR5 |
+| **System RAM** | 64GB DDR5 @ 5400 MT/s|
 | **Software Stack** | ComfyUI · PyTorch `2.13.0+cu130` · CUDA `13.0` |
 | **ComfyUI Launch Flags** | `--windows-standalone-build --reserve-vram 2` *(14GB usable VRAM)* |
 | **Diffusion Model** | MiniMax H3 (`minimax_h3_fl2va_pruned_int8_convrot.safetensors`) |
