@@ -13,9 +13,6 @@
       --text-muted: #94a3b8;
       --accent: #38bdf8;
       --accent-hover: #0284c7;
-      --warn: #64748b;
-      --warn-bg: rgba(100, 116, 139, 0.08);
-      --warn-border: rgba(100, 116, 139, 0.25);
       --success: #10b981;
     }
 
@@ -193,8 +190,9 @@
       border-radius: 50%;
       display: inline-block;
     }
-    .badge-dot.warn { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
-    .badge-dot.rec { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    .badge-dot.unintended { background: #c084fc; box-shadow: 0 0 8px #c084fc; }
+    .badge-dot.short { background: #94a3b8; box-shadow: 0 0 6px #94a3b8; }
+    .badge-dot.rec { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
 
     /* Benchmark Table */
     .table-container {
@@ -229,32 +227,52 @@
       z-index: 1;
     }
 
-    th.warn-col {
-      background: #111a28;
+    /* Column Header Accents */
+    th.short-col {
+      background: #111724;
       color: #94a3b8;
-      border-bottom: 2px solid var(--warn);
+      border-bottom: 2px solid #475569;
+    }
+
+    th.rec-col {
+      background: #0f1c2e;
+      color: #38bdf8;
+      border-bottom: 2px solid #38bdf8;
     }
 
     .col-subtext {
       display: block;
       font-size: 0.65rem;
       font-weight: normal;
-      color: #64748b;
-      opacity: 0.9;
+      color: #94a3b8;
+      opacity: 0.85;
     }
 
-    td.sticky-col.warn-row {
-      color: #94a3b8;
+    /* Sticky Row Headers */
+    th.sticky-col, td.sticky-col {
+      position: sticky;
+      left: 0;
+      background: #141d2e;
+      font-weight: bold;
+      color: var(--accent);
+      font-size: 1rem;
+      z-index: 3;
+      min-width: 110px;
+    }
+
+    td.sticky-col.unintended-row {
+      color: #c084fc;
+      background: #171322;
     }
 
     .row-badge {
       display: block;
       font-size: 0.62rem;
-      color: #64748b;
+      color: #c084fc;
       font-weight: normal;
     }
 
-    /* Cell Buttons */
+    /* Cell Buttons - Base */
     .cell-btn {
       display: flex;
       flex-direction: column;
@@ -265,32 +283,58 @@
       padding: 8px 2px;
       border-radius: 8px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent;
-      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: all 0.15s ease;
     }
 
-    .cell-btn.suboptimal {
-      background: var(--warn-bg);
-      border: 1px dashed var(--warn-border);
+    /* Tier 1: Recommended (0.2MP+ @ 7s–15s) */
+    .cell-btn.tier-rec {
+      background: rgba(56, 189, 248, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.28);
     }
-
-    .cell-btn:hover {
-      border: 1px solid var(--accent) !important;
-      background: rgba(56, 189, 248, 0.2) !important;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
-    }
-
-    /* Bigger Generation Times in Table */
-    .gen-time {
-      font-size: 1.25rem;
+    .cell-btn.tier-rec .gen-time {
+      font-size: 1.28rem;
       font-weight: 800;
       color: #38bdf8;
       letter-spacing: -0.3px;
     }
+    .cell-btn.tier-rec:hover {
+      border: 1px solid #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.22) !important;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    }
 
-    .cell-btn.suboptimal .gen-time {
-      color: #7dd3fc; /* Soft cool blue instead of bright alarm yellow */
+    /* Tier 2: Short Duration (≤6s) */
+    .cell-btn.tier-short {
+      background: rgba(100, 116, 139, 0.08);
+      border: 1px dashed rgba(148, 163, 184, 0.3);
+    }
+    .cell-btn.tier-short .gen-time {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: -0.3px;
+    }
+    .cell-btn.tier-short:hover {
+      border: 1px solid #94a3b8 !important;
+      background: rgba(148, 163, 184, 0.2) !important;
+      box-shadow: 0 0 10px rgba(148, 163, 184, 0.3);
+    }
+
+    /* Tier 3: 0.1MP Unintended Row */
+    .cell-btn.tier-unintended {
+      background: rgba(168, 85, 247, 0.07);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+    .cell-btn.tier-unintended .gen-time {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #c084fc;
+      letter-spacing: -0.3px;
+    }
+    .cell-btn.tier-unintended:hover {
+      border: 1px solid #c084fc !important;
+      background: rgba(168, 85, 247, 0.22) !important;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
     }
 
     .video-name {
@@ -449,7 +493,7 @@
     .gate-title {
       font-size: 1.35rem;
       font-weight: 700;
-      color: #e2e8f0; /* Clean neutral light gray */
+      color: #e2e8f0;
       margin-bottom: 0.75rem;
     }
 
@@ -612,11 +656,11 @@ N/A</div>
 
       <div class="legend-bar">
         <div class="legend-item">
-          <span class="badge-dot warn"></span>
+          <span class="badge-dot unintended"></span>
           <span><strong>0.1MP:</strong> Unintended resolution (Glitchy artifacts)</span>
         </div>
         <div class="legend-item">
-          <span class="badge-dot warn"></span>
+          <span class="badge-dot short"></span>
           <span><strong>≤6s:</strong> Short duration (Too short for this prompt)</span>
         </div>
         <div class="legend-item">
@@ -719,26 +763,27 @@ N/A</div>
       "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" } }
     };
 
-    // Render Table Header
+    // Render Table Header with Distinct Column Accents
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
       if (d <= 6) {
-        th.className = "warn-col";
+        th.className = "short-col";
         th.innerHTML = `${d}s<span class="col-subtext">Too short</span>`;
       } else {
-        th.textContent = `${d}s`;
+        th.className = "rec-col";
+        th.innerHTML = `${d}s`;
       }
       headerRow.appendChild(th);
     });
 
-    // Render Table Rows
+    // Render Table Rows with 3-Tier Classification
     const tbody = document.getElementById("tableBody");
     resolutions.forEach((mp) => {
       const tr = document.createElement("tr");
       
       const rowHeader = document.createElement("td");
-      rowHeader.className = "sticky-col" + (mp === "0.1MP" ? " warn-row" : "");
+      rowHeader.className = "sticky-col" + (mp === "0.1MP" ? " unintended-row" : "");
       rowHeader.innerHTML = mp === "0.1MP" ? `0.1MP<span class="row-badge">⚠️ Not rec.</span>` : mp;
       tr.appendChild(rowHeader);
 
@@ -748,8 +793,16 @@ N/A</div>
 
         if (entry) {
           const btn = document.createElement("div");
-          const isSuboptimal = (mp === "0.1MP" || d <= 6);
-          btn.className = "cell-btn" + (isSuboptimal ? " suboptimal" : "");
+          
+          // Determine 3-Tier Class
+          if (mp === "0.1MP") {
+            btn.className = "cell-btn tier-unintended";
+          } else if (d <= 6) {
+            btn.className = "cell-btn tier-short";
+          } else {
+            btn.className = "cell-btn tier-rec";
+          }
+
           btn.innerHTML = `<span class="gen-time">${entry.time}</span><span class="video-name" title="${entry.name}">${entry.name}</span>`;
           btn.onclick = () => openModal(mp, d, entry.name, entry.time);
           td.appendChild(btn);
