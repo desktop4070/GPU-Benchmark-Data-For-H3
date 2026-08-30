@@ -190,7 +190,7 @@
       border-radius: 50%;
       display: inline-block;
     }
-    .badge-dot.unintended { background: #c084fc; box-shadow: 0 0 8px #c084fc; }
+    .badge-dot.unintended { background: #d4884f; box-shadow: 0 0 8px #d4884f; }
     .badge-dot.short { background: #94a3b8; box-shadow: 0 0 6px #94a3b8; }
     .badge-dot.rec { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
 
@@ -263,14 +263,14 @@
     }
 
     td.sticky-col.unintended-row {
-      color: #c084fc;
-      background: #171322;
+      color: #d4884f;
+      background: #1c1511;
     }
 
     .row-badge {
       display: block;
       font-size: 0.62rem;
-      color: #c084fc;
+      color: #d4884f;
       font-weight: normal;
     }
 
@@ -322,19 +322,19 @@
     }
 
     .cell-btn.tier-unintended {
-      background: rgba(168, 85, 247, 0.07);
-      border: 1px solid rgba(168, 85, 247, 0.25);
+      background: rgba(212, 136, 79, 0.08);
+      border: 1px solid rgba(212, 136, 79, 0.28);
     }
     .cell-btn.tier-unintended .gen-time {
       font-size: 1.15rem;
       font-weight: 700;
-      color: #c084fc;
+      color: #d4884f;
       letter-spacing: -0.3px;
     }
     .cell-btn.tier-unintended:hover {
-      border: 1px solid #c084fc !important;
-      background: rgba(168, 85, 247, 0.22) !important;
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+      border: 1px solid #d4884f !important;
+      background: rgba(212, 136, 79, 0.22) !important;
+      box-shadow: 0 0 12px rgba(212, 136, 79, 0.35);
     }
 
     .video-name {
@@ -606,7 +606,7 @@
       <div class="top-nav">
         <a class="gh-btn" href="https://github.com/desktop4070/Optimized-H3-Gen-Times-V1/tree/main" target="_blank" rel="noopener noreferrer">
           <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-          View Source Repository on GitHub ↗
+          View Source Repository on GitHub
         </a>
       </div>
 
@@ -617,8 +617,8 @@
 
       <details class="workflow-details">
         <summary class="workflow-summary">
-          <span>⚙️ Benchmark Environment, Workflow Settings & Prompt</span>
-          <span style="font-size: 0.8rem;">Click to expand / collapse ▼</span>
+          <span>Benchmark Environment, Workflow Settings & Prompt</span>
+          <span style="font-size: 0.8rem;">Click to expand / collapse</span>
         </summary>
         <div class="workflow-body">
           <table class="specs-table">
@@ -661,7 +661,7 @@ N/A</div>
         </div>
         <div class="legend-item">
           <span class="badge-dot short"></span>
-          <span><strong>≤6 sec:</strong> Short duration (Too short for this prompt)</span>
+          <span><strong>&le; 6 sec:</strong> Short duration (Too short for this prompt)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
@@ -690,7 +690,7 @@ N/A</div>
       <div class="modal-header">
         <div class="modal-title-wrap">
           <div class="modal-title" id="modalTitle">Clip Details</div>
-          <div class="nav-hints">Use <kbd>←</kbd> <kbd>→</kbd> for Duration &nbsp;|&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> for Resolution</div>
+          <div class="nav-hints">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> for Duration &nbsp;|&nbsp; <kbd>&uarr;</kbd> <kbd>&darr;</kbd> for Resolution</div>
         </div>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
@@ -705,7 +705,7 @@ N/A</div>
       <div class="video-container">
         <!-- Warning Gate -->
         <div class="video-gate" id="videoGate">
-          <div class="gate-title" id="gateTitle">⚠️ Notice</div>
+          <div class="gate-title" id="gateTitle">Notice</div>
           <div class="gate-msg" id="gateMsg"></div>
 
           <div class="gate-actions">
@@ -727,14 +727,14 @@ N/A</div>
           Your browser does not support the video tag.
         </video>
         <div class="error-box" id="errorBox">
-          <p>⚠️ Video could not be played directly in browser.</p>
+          <p>Video could not be played directly in browser.</p>
           <a id="errorLink" href="" target="_blank">Click here to open / download raw video file</a>
         </div>
       </div>
 
       <div class="modal-footer">
         <div id="modalFilename">File: -</div>
-        <div><a id="modalDirectLink" class="direct-link" href="" target="_blank">Direct Video Link ↗</a></div>
+        <div><a id="modalDirectLink" class="direct-link" href="" target="_blank">Direct Video Link</a></div>
       </div>
     </div>
   </div>
@@ -760,7 +760,7 @@ N/A</div>
 
     const FPS = 24;
     const durations = Array.from({ length: 15 }, (_, i) => i + 1);
-    const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "1.0MP"];
+    const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "0.98MP", "1.0MP"];
 
     let currentMpIndex = -1;
     let currentDuration = -1;
@@ -774,10 +774,11 @@ N/A</div>
       "0.4MP": { 1: { name: "MiniMax_H3_03729_", time: "20s" }, 2: { name: "MiniMax_H3_03730_", time: "25s" }, 3: { name: "MiniMax_H3_03731_", time: "32s" }, 4: { name: "MiniMax_H3_03732_", time: "48s" }, 5: { name: "MiniMax_H3_03733_", time: "57s" }, 6: { name: "MiniMax_H3_03734_", time: "75s" }, 7: { name: "MiniMax_H3_03735_", time: "84s" }, 8: { name: "MiniMax_H3_03736_", time: "98s" }, 9: { name: "MiniMax_H3_03737_", time: "120s" }, 10: { name: "MiniMax_H3_03738_", time: "132s" }, 11: { name: "MiniMax_H3_03739_", time: "156s" }, 12: { name: "MiniMax_H3_03740_", time: "169s" }, 13: { name: "MiniMax_H3_03741_", time: "196s" }, 14: { name: "MiniMax_H3_03742_", time: "210s" }, 15: { name: "MiniMax_H3_03743_", time: "224s" } },
       "0.5MP": { 1: { name: "MiniMax_H3_03744_", time: "23s" }, 2: { name: "MiniMax_H3_03745_", time: "30s" }, 3: { name: "MiniMax_H3_03746_", time: "39s" }, 4: { name: "MiniMax_H3_03747_", time: "58s" }, 5: { name: "MiniMax_H3_03748_", time: "70s" }, 6: { name: "MiniMax_H3_03749_", time: "97s" }, 7: { name: "MiniMax_H3_03750_", time: "110s" }, 8: { name: "MiniMax_H3_03751_", time: "125s" }, 9: { name: "MiniMax_H3_03752_", time: "154s" }, 10: { name: "MiniMax_H3_03753_", time: "169s" }, 11: { name: "MiniMax_H3_03754_", time: "202s" }, 12: { name: "MiniMax_H3_03755_", time: "219s" }, 13: { name: "MiniMax_H3_03756_", time: "255s" }, 14: { name: "MiniMax_H3_03757_", time: "275s" }, 15: { name: "MiniMax_H3_03758_", time: "293s" } },
       "0.6MP": { 1: { name: "MiniMax_H3_03759_", time: "26s" }, 2: { name: "MiniMax_H3_03760_", time: "36s" }, 3: { name: "MiniMax_H3_03761_", time: "48s" }, 4: { name: "MiniMax_H3_03762_", time: "73s" }, 5: { name: "MiniMax_H3_03763_", time: "92s" }, 6: { name: "MiniMax_H3_03764_", time: "123s" }, 7: { name: "MiniMax_H3_03765_", time: "141s" }, 8: { name: "MiniMax_H3_03766_", time: "159s" }, 9: { name: "MiniMax_H3_03767_", time: "201s" }, 10: { name: "MiniMax_H3_03768_", time: "220s" }, 11: { name: "MiniMax_H3_03769_", time: "264s" }, 12: { name: "MiniMax_H3_03770_", time: "289s" }, 13: { name: "MiniMax_H3_03801_", time: "340s" }, 14: { name: "MiniMax_H3_03806_", time: "367s" }, 15: { name: "MiniMax_H3_03807_", time: "392s" } },
-      "0.7MP": { 1: { name: "MiniMax_H3_03771_", time: "29s" }, 2: { name: "MiniMax_H3_03772_", time: "40s" }, 3: { name: "MiniMax_H3_03773_", time: "54s" }, 4: { name: "MiniMax_H3_03774_", time: "88s" }, 5: { name: "MiniMax_H3_03775_", time: "105s" }, 6: { name: "MiniMax_H3_03776_", time: "145s" }, 7: { name: "MiniMax_H3_03777_", time: "167s" }, 8: { name: "MiniMax_H3_03778_", time: "189s" }, 9: { name: "MiniMax_H3_03779_", time: "238s" }, 10: { name: "MiniMax_H3_03780_", time: "260s" }, 11: { name: "MiniMax_H3_03802_", time: "317s" }, 12: { name: "MiniMax_H3_03808_", time: "347s" } },
-      "0.8MP": { 1: { name: "MiniMax_H3_03781_", time: "32s" }, 2: { name: "MiniMax_H3_03782_", time: "47s" }, 3: { name: "MiniMax_H3_03783_", time: "62s" }, 4: { name: "MiniMax_H3_03784_", time: "102s" }, 5: { name: "MiniMax_H3_03785_", time: "123s" }, 6: { name: "MiniMax_H3_03786_", time: "169s" }, 7: { name: "MiniMax_H3_03787_", time: "195s" }, 8: { name: "MiniMax_H3_03788_", time: "222s" }, 9: { name: "MiniMax_H3_03803_", time: "280s" } },
-      "0.9MP": { 1: { name: "MiniMax_H3_03789_", time: "37s" }, 2: { name: "MiniMax_H3_03790_", time: "55s" }, 3: { name: "MiniMax_H3_03791_", time: "73s" }, 4: { name: "MiniMax_H3_03792_", time: "123s" }, 5: { name: "MiniMax_H3_03793_", time: "149s" }, 6: { name: "MiniMax_H3_03794_", time: "206s" }, 7: { name: "MiniMax_H3_03804_", time: "239s" } },
-      "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" } }
+      "0.7MP": { 1: { name: "MiniMax_H3_03771_", time: "29s" }, 2: { name: "MiniMax_H3_03772_", time: "40s" }, 3: { name: "MiniMax_H3_03773_", time: "54s" }, 4: { name: "MiniMax_H3_03774_", time: "88s" }, 5: { name: "MiniMax_H3_03775_", time: "105s" }, 6: { name: "MiniMax_H3_03776_", time: "145s" }, 7: { name: "MiniMax_H3_03777_", time: "167s" }, 8: { name: "MiniMax_H3_03778_", time: "189s" }, 9: { name: "MiniMax_H3_03779_", time: "238s" }, 10: { name: "MiniMax_H3_03780_", time: "260s" }, 11: { name: "MiniMax_H3_03802_", time: "317s" }, 12: { name: "MiniMax_H3_03808_", time: "347s" }, 13: { name: "MiniMax_H3_03812_", time: "448s" }, 14: { name: "MiniMax_H3_03813_", time: "579s" } },
+      "0.8MP": { 1: { name: "MiniMax_H3_03781_", time: "32s" }, 2: { name: "MiniMax_H3_03782_", time: "47s" }, 3: { name: "MiniMax_H3_03783_", time: "62s" }, 4: { name: "MiniMax_H3_03784_", time: "102s" }, 5: { name: "MiniMax_H3_03785_", time: "123s" }, 6: { name: "MiniMax_H3_03786_", time: "169s" }, 7: { name: "MiniMax_H3_03787_", time: "195s" }, 8: { name: "MiniMax_H3_03788_", time: "222s" }, 9: { name: "MiniMax_H3_03803_", time: "280s" }, 10: { name: "MiniMax_H3_03814_", time: "323s" }, 11: { name: "MiniMax_H3_03815_", time: "404s" }, 12: { name: "MiniMax_H3_03816_", time: "441s" }, 13: { name: "MiniMax_H3_03837_", time: "1047s" }, 14: { name: "MiniMax_H3_03838_", time: "1179s" } },
+      "0.9MP": { 1: { name: "MiniMax_H3_03789_", time: "37s" }, 2: { name: "MiniMax_H3_03790_", time: "55s" }, 3: { name: "MiniMax_H3_03791_", time: "73s" }, 4: { name: "MiniMax_H3_03792_", time: "123s" }, 5: { name: "MiniMax_H3_03793_", time: "149s" }, 6: { name: "MiniMax_H3_03794_", time: "206s" }, 7: { name: "MiniMax_H3_03804_", time: "239s" }, 8: { name: "MiniMax_H3_03817_", time: "295s" }, 9: { name: "MiniMax_H3_03818_", time: "362s" }, 10: { name: "MiniMax_H3_03819_", time: "423s" }, 11: { name: "MiniMax_H3_03820_", time: "642s" } },
+      "0.98MP": { 1: { name: "MiniMax_H3_03824_", time: "84s" }, 2: { name: "MiniMax_H3_03825_", time: "66s" }, 3: { name: "MiniMax_H3_03826_", time: "95s" }, 4: { name: "MiniMax_H3_03827_", time: "148s" }, 5: { name: "MiniMax_H3_03828_", time: "176s" }, 6: { name: "MiniMax_H3_03829_", time: "242s" }, 7: { name: "MiniMax_H3_03830_", time: "282s" }, 8: { name: "MiniMax_H3_03831_", time: "320s" }, 9: { name: "MiniMax_H3_03832_", time: "405s" }, 10: { name: "MiniMax_H3_03833_", time: "466s" }, 11: { name: "MiniMax_H3_03834_", time: "3888s" } },
+      "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" }, 8: { name: "MiniMax_H3_03821_", time: "326s" }, 9: { name: "MiniMax_H3_03822_", time: "423s" }, 10: { name: "MiniMax_H3_03823_", time: "518s" } }
     };
 
     // Render Table Header
@@ -803,7 +804,7 @@ N/A</div>
       
       const rowHeader = document.createElement("td");
       rowHeader.className = "sticky-col" + (mp === "0.1MP" ? " unintended-row" : "");
-      rowHeader.innerHTML = mp === "0.1MP" ? `0.1MP<span class="row-badge">⚠️ Not rec.</span>` : mp;
+      rowHeader.innerHTML = mp === "0.1MP" ? `0.1MP<span class="row-badge">Not rec.</span>` : mp;
       tr.appendChild(rowHeader);
 
       durations.forEach(d => {
@@ -891,12 +892,12 @@ N/A</div>
         show01Option = true;
       }
       if (duration <= 6 && !dismissShort) {
-        warnings.push("<strong>≤6 sec videos</strong> are fine for certain prompts, but is too short for this specific prompt.");
+        warnings.push("<strong>&le; 6 sec videos</strong> are fine for certain prompts, but is too short for this specific prompt.");
         showShortOption = true;
       }
 
       if (warnings.length > 0) {
-        gateTitle.textContent = mp === "0.1MP" ? "⚠️ Not Recommended Resolution" : "ℹ️ Short Duration Notice";
+        gateTitle.textContent = mp === "0.1MP" ? "Not Recommended Resolution" : "Short Video Notice";
         gateMsg.innerHTML = warnings.join("<br><br>");
 
         labelDismiss01.style.display = show01Option ? "flex" : "none";
