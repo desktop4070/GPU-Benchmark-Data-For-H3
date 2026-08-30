@@ -1,6 +1,6 @@
 # H3 Video Generation Benchmark Data
 
-Interactive benchmark matrix comparing generation times and visual quality across resolutions (0.1MP – 1.0MP) and durations (1s – 15s).
+Benchmark matrix comparing generation times and visual quality across resolutions (0.1MP – 1.0MP) and durations (1s – 15s).
 
 🔗 **Live Interactive Grid:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
 
