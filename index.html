@@ -1117,7 +1117,7 @@ N/A</div>
       let showShortOption = false;
 
       if (mp === "0.1MP" && !dismiss01) {
-        warnings.push("<strong>0.1MP</strong> has flashing artifacts and is not recommended for H3.");
+        warnings.push("<strong>0.1MP</strong> has flashing artifacts and is not intended for H3.");
         show01Option = true;
       }
       if (duration <= 7 && !dismissShort) {
@@ -1129,7 +1129,7 @@ N/A</div>
         if (show01Option && showShortOption) {
           gateTitle.textContent = "Resolution & Duration Notice";
         } else if (show01Option) {
-          gateTitle.textContent = "Not Recommended Resolution";
+          gateTitle.textContent = "Not Intended Resolution";
         } else {
           gateTitle.textContent = "Short Video Notice";
         }
