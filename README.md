@@ -16,8 +16,8 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 | **Pagefile.sys** | 65536 MB |
 | **Software Stack** | ComfyUI · PyTorch `2.13.0+cu130` · CUDA `13.0` |
 | **ComfyUI Launch Flags** | `--windows-standalone-build --reserve-vram 2` |
-| **Diffusion Model** | MiniMax H3 (`minimax_h3_fl2va_pruned_int8_convrot.safetensors`) |
-| **Text Encoder** | Qwen3-VL 32B (`qwen3vl_32b_minimax_h3_int8_convrot.safetensors`) |
+| **Diffusion Model** | `minimax_h3_fl2va_pruned_int8_convrot.safetensors` |
+| **Text Encoder** | `qwen3vl_32b_minimax_h3_int8_convrot.safetensors` |
 | **Attention** | Comfy Kitchen Attention |
 | **Turbo LoRA** | larryvrh's `minimax_h3_turbo_v4_step600_ema.safetensors` @ 1.00 |
 | **Sampler / Scheduler** | `er_sde` / `sgm_uniform` |
