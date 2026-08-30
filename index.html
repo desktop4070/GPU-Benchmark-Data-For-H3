@@ -13,9 +13,9 @@
       --text-muted: #94a3b8;
       --accent: #38bdf8;
       --accent-hover: #0284c7;
-      --warn: #f59e0b;
-      --warn-bg: rgba(245, 158, 11, 0.08);
-      --warn-border: rgba(245, 158, 11, 0.3);
+      --warn: #64748b;
+      --warn-bg: rgba(100, 116, 139, 0.08);
+      --warn-border: rgba(100, 116, 139, 0.25);
       --success: #10b981;
     }
 
@@ -230,8 +230,8 @@
     }
 
     th.warn-col {
-      background: #1a161f;
-      color: #fcd34d;
+      background: #111a28;
+      color: #94a3b8;
       border-bottom: 2px solid var(--warn);
     }
 
@@ -239,29 +239,18 @@
       display: block;
       font-size: 0.65rem;
       font-weight: normal;
-      color: var(--warn);
-      opacity: 0.85;
-    }
-
-    th.sticky-col, td.sticky-col {
-      position: sticky;
-      left: 0;
-      background: #141d2e;
-      font-weight: bold;
-      color: var(--accent);
-      font-size: 1rem;
-      z-index: 3;
-      min-width: 110px;
+      color: #64748b;
+      opacity: 0.9;
     }
 
     td.sticky-col.warn-row {
-      color: #fcd34d;
+      color: #94a3b8;
     }
 
     .row-badge {
       display: block;
       font-size: 0.62rem;
-      color: var(--warn);
+      color: #64748b;
       font-weight: normal;
     }
 
@@ -301,7 +290,7 @@
     }
 
     .cell-btn.suboptimal .gen-time {
-      color: #fcd34d;
+      color: #7dd3fc; /* Soft cool blue instead of bright alarm yellow */
     }
 
     .video-name {
@@ -460,7 +449,7 @@
     .gate-title {
       font-size: 1.35rem;
       font-weight: 700;
-      color: #fcd34d;
+      color: #e2e8f0; /* Clean neutral light gray */
       margin-bottom: 0.75rem;
     }
 
@@ -624,15 +613,15 @@ N/A</div>
       <div class="legend-bar">
         <div class="legend-item">
           <span class="badge-dot warn"></span>
-          <span><strong>0.1MP:</strong> Unintended resolution (glitchy artifacts)</span>
+          <span><strong>0.1MP:</strong> Unintended resolution (Glitchy artifacts)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot warn"></span>
-          <span><strong>≤6s:</strong> Short duration (too short for this prompt)</span>
+          <span><strong>≤6s:</strong> Short duration (Too short for this prompt)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
-          <span><strong>0.2MP–1.0MP @ 7s–15s:</strong> Recommended benchmark range</span>
+          <span><strong>0.2MP–1.0MP @ 7s–15s:</strong> Recommended range for this benchmark</span>
         </div>
       </div>
     </header>
@@ -641,7 +630,7 @@ N/A</div>
       <table class="benchmark-grid" id="matrixTable">
         <thead>
           <tr id="headerRow">
-            <th class="sticky-col">MP \ Dur</th>
+            <th class="sticky-col">MP / Duration</th>
           </tr>
         </thead>
         <tbody id="tableBody">
@@ -664,9 +653,9 @@ N/A</div>
 
       <!-- Stats Bar: Clean Resolution, Clean Frame Count, and Big Gen Time -->
       <div class="modal-stats-bar">
-        <div class="stat-badge highlight">⏱️ Gen Time: <strong id="modalGenTime">-</strong></div>
-        <div class="stat-badge">📐 Actual Res: <strong id="modalRes">Detecting...</strong></div>
-        <div class="stat-badge">🎞️ Actual Frames: <strong id="modalFrames">Detecting...</strong></div>
+        <div class="stat-badge highlight">Gen Time: <strong id="modalGenTime">-</strong></div>
+        <div class="stat-badge">Resolution: <strong id="modalRes">Detecting...</strong></div>
+        <div class="stat-badge">Frame count: <strong id="modalFrames">Detecting...</strong></div>
       </div>
 
       <div class="video-container">
