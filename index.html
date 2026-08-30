@@ -628,7 +628,7 @@ N/A</div>
         </div>
         <div class="legend-item">
           <span class="badge-dot warn"></span>
-          <span><strong>≤5s:</strong> Short duration (feels rushed)</span>
+          <span><strong>≤6s:</strong> Short duration (too short for this prompt)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
@@ -684,7 +684,7 @@ N/A</div>
               </label>
               <label class="gate-checkbox-label" id="labelDismissShort" style="display: none;">
                 <input type="checkbox" id="checkDismissShort">
-                <span>Don't show this message again for &le; 5s videos</span>
+                <span>Don't show this message again for &le; 6s videos</span>
               </label>
             </div>
           </div>
@@ -734,7 +734,7 @@ N/A</div>
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
-      if (d <= 5) {
+      if (d <= 6) {
         th.className = "warn-col";
         th.innerHTML = `${d}s<span class="col-subtext">Too short</span>`;
       } else {
@@ -759,7 +759,7 @@ N/A</div>
 
         if (entry) {
           const btn = document.createElement("div");
-          const isSuboptimal = (mp === "0.1MP" || d <= 5);
+          const isSuboptimal = (mp === "0.1MP" || d <= 6);
           btn.className = "cell-btn" + (isSuboptimal ? " suboptimal" : "");
           btn.innerHTML = `<span class="gen-time">${entry.time}</span><span class="video-name" title="${entry.name}">${entry.name}</span>`;
           btn.onclick = () => openModal(mp, d, entry.name, entry.time);
@@ -853,8 +853,8 @@ N/A</div>
         warnings.push("<strong>0.1MP</strong> has glitchy artifacts and is not recommended for H3.");
         show01Option = true;
       }
-      if (duration <= 5 && !dismissShort) {
-        warnings.push("<strong>≤5s videos</strong> look fine visually, but feel rushed and too fast-paced for the prompt.");
+      if (duration <= 6 && !dismissShort) {
+        warnings.push("<strong>≤6s videos</strong> are fine for certain prompts, but is too short for this specific prompt.");
         showShortOption = true;
       }
 
