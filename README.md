@@ -2,6 +2,8 @@
 
 Testing generation times, visual quality, and prompt adherence across resolutions and durations (0.1-1.0MP / 1-15s).
 
+https://raw.githubusercontent.com/desktop4070/GPU-Benchmark-Data-For-H3/refs/heads/main/H3-Benchmark-Workflow.png
+
 **Workflow:** [View Json](https://raw.githubusercontent.com/desktop4070/Optimized-H3-Gen-Times-V1/refs/heads/main/MiniMax_H3_03706_.json)
 
 **Gen Time Chart:** [View Web App](https://desktop4070.github.io/GPU-Benchmark-Data-For-H3/)
