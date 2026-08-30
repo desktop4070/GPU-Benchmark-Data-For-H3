@@ -1,4 +1,4 @@
-# Optimized H3 Video Generation Benchmark
+# Optimized H3 Video Generation Benchmark Data
 
 Interactive benchmark matrix comparing generation times and visual quality across resolutions (0.1MP – 1.0MP) and durations (1s – 15s).
 
