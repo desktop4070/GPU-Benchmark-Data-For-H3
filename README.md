@@ -25,8 +25,6 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 | **Sampler / Scheduler** | `er_sde` / `sgm_uniform` |
 | **Steps** | 8 |
 
-| **Steps** | 8 |
-
 ---
 
 ### Prompt
