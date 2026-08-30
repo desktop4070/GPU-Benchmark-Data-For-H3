@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Model Benchmark Matrix</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      min-width: 68px;
+    }
+
+    th {
+      background: #111827;
+      color: var(--text-muted);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+
+    th.sticky-col, td.sticky-col {
+      position: sticky;
+      left: 0;
+      background: #1e293b;
+      font-weight: bold;
+      color: var(--accent);
+      z-index: 2;
+    }
+
+    .cell-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 4px 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .cell-btn:hover {
+      transform: scale(1.05);
+      border: 1px solid var(--accent);
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    .gen-time {
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .run-id {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .empty-cell {
+      color: #475569;
+      font-style: italic;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 800px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .close-btn:hover { color: white; }
+
+    .video-container {
+      background: #000;
+      width: 100%;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      max-height: 500px;
+      display: block;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111827;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Video Generation Benchmark Matrix</h1>
+      <p class="subtitle">Click any cell to play the generated video and inspect gen time.</p>
+    </header>
+
+    <div class="table-container">
+      <table id="matrixTable">
+        <thead>
+          <tr id="headerRow">
+            <th class="sticky-col">MP \ Dur</th>
+            <!-- Durations 1s to 15s injected via JS -->
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Rows injected via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="modal-overlay" id="videoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Clip Details</div>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="video-container">
+        <video id="modalVideo" controls autoplay loop playsinline>
+          <source id="videoSource" src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="modal-footer">
+        <div id="modalMeta">Run ID: -</div>
+        <div id="modalTime">Gen Time: -</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration: adjust video file path pattern as needed
+    const getVideoUrl = (runId) => `./videos/${runId}.mp4`;
+
+    const durations = Array.from({ length: 15 }, (_, i) => i + 1);
+    const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "1.0MP"];
+
+    // Full benchmark dataset
+    const benchmarkData = {
+      "0.1MP": { 1: { id: "H3_03684", time: "13s" }, 2: { id: "H3_03685", time: "12s" }, 3: { id: "H3_03686", time: "14s" }, 4: { id: "H3_03687", time: "17s" }, 5: { id: "H3_03688", time: "19s" }, 6: { id: "H3_03689", time: "22s" }, 7: { id: "H3_03690", time: "25s" }, 8: { id: "H3_03691", time: "27s" }, 9: { id: "H3_03692", time: "30s" }, 10: { id: "H3_03693", time: "33s" }, 11: { id: "H3_03694", time: "37s" }, 12: { id: "H3_03695", time: "39s" }, 13: { id: "H3_03696", time: "41s" }, 14: { id: "H3_03697", time: "43s" }, 15: { id: "H3_03698", time: "47s" } },
+      "0.2MP": { 1: { id: "H3_03699", time: "15s" }, 2: { id: "H3_03700", time: "18s" }, 3: { id: "H3_03701", time: "21s" }, 4: { id: "H3_03702", time: "27s" }, 5: { id: "H3_03703", time: "29s" }, 6: { id: "H3_03704", time: "37s" }, 7: { id: "H3_03705", time: "41s" }, 8: { id: "H3_03706", time: "45s" }, 9: { id: "H3_03707", time: "54s" }, 10: { id: "H3_03708", time: "59s" }, 11: { id: "H3_03709", time: "68s" }, 12: { id: "H3_03710", time: "74s" }, 13: { id: "H3_03711", time: "88s" }, 14: { id: "H3_03712", time: "100s" }, 15: { id: "H3_03713", time: "98s" } },
+      "0.3MP": { 1: { id: "H3_03714", time: "16s" }, 2: { id: "H3_03715", time: "19s" }, 3: { id: "H3_03716", time: "23s" }, 4: { id: "H3_03717", time: "33s" }, 5: { id: "H3_03718", time: "39s" }, 6: { id: "H3_03719", time: "51s" }, 7: { id: "H3_03720", time: "56s" }, 8: { id: "H3_03721", time: "63s" }, 9: { id: "H3_03722", time: "74s" }, 10: { id: "H3_03723", time: "82s" }, 11: { id: "H3_03724", time: "103s" }, 12: { id: "H3_03725", time: "111s" }, 13: { id: "H3_03726", time: "127s" }, 14: { id: "H3_03727", time: "135s" }, 15: { id: "H3_03728", time: "142s" } },
+      "0.4MP": { 1: { id: "H3_03729", time: "20s" }, 2: { id: "H3_03730", time: "25s" }, 3: { id: "H3_03731", time: "32s" }, 4: { id: "H3_03732", time: "48s" }, 5: { id: "H3_03733", time: "57s" }, 6: { id: "H3_03734", time: "75s" }, 7: { id: "H3_03735", time: "84s" }, 8: { id: "H3_03736", time: "98s" }, 9: { id: "H3_03737", time: "120s" }, 10: { id: "H3_03738", time: "132s" }, 11: { id: "H3_03739", time: "156s" }, 12: { id: "H3_03740", time: "169s" }, 13: { id: "H3_03741", time: "196s" }, 14: { id: "H3_03742", time: "210s" }, 15: { id: "H3_03743", time: "224s" } },
+      "0.5MP": { 1: { id: "H3_03744", time: "23s" }, 2: { id: "H3_03745", time: "30s" }, 3: { id: "H3_03746", time: "39s" }, 4: { id: "H3_03747", time: "58s" }, 5: { id: "H3_03748", time: "70s" }, 6: { id: "H3_03749", time: "97s" }, 7: { id: "H3_03750", time: "110s" }, 8: { id: "H3_03751", time: "125s" }, 9: { id: "H3_03752", time: "154s" }, 10: { id: "H3_03753", time: "169s" }, 11: { id: "H3_03754", time: "202s" }, 12: { id: "H3_03755", time: "219s" }, 13: { id: "H3_03756", time: "255s" }, 14: { id: "H3_03757", time: "275s" }, 15: { id: "H3_03758", time: "293s" } },
+      "0.6MP": { 1: { id: "H3_03759", time: "26s" }, 2: { id: "H3_03760", time: "36s" }, 3: { id: "H3_03761", time: "48s" }, 4: { id: "H3_03762", time: "73s" }, 5: { id: "H3_03763", time: "92s" }, 6: { id: "H3_03764", time: "123s" }, 7: { id: "H3_03765", time: "141s" }, 8: { id: "H3_03766", time: "159s" }, 9: { id: "H3_03767", time: "201s" }, 10: { id: "H3_03768", time: "220s" }, 11: { id: "H3_03769", time: "264s" }, 12: { id: "H3_03770", time: "289s" }, 13: { id: "H3_03801", time: "340s" }, 14: { id: "H3_03806", time: "367s" }, 15: { id: "H3_03807", time: "392s" } },
+      "0.7MP": { 1: { id: "H3_03771", time: "29s" }, 2: { id: "H3_03772", time: "40s" }, 3: { id: "H3_03773", time: "54s" }, 4: { id: "H3_03774", time: "88s" }, 5: { id: "H3_03775", time: "105s" }, 6: { id: "H3_03776", time: "145s" }, 7: { id: "H3_03777", time: "167s" }, 8: { id: "H3_03778", time: "189s" }, 9: { id: "H3_03779", time: "238s" }, 10: { id: "H3_03780", time: "260s" }, 11: { id: "H3_03802", time: "317s" }, 12: { id: "H3_03808", time: "347s" } },
+      "0.8MP": { 1: { id: "H3_03781", time: "32s" }, 2: { id: "H3_03782", time: "47s" }, 3: { id: "H3_03783", time: "62s" }, 4: { id: "H3_03784", time: "102s" }, 5: { id: "H3_03785", time: "123s" }, 6: { id: "H3_03786", time: "169s" }, 7: { id: "H3_03787", time: "195s" }, 8: { id: "H3_03788", time: "222s" }, 9: { id: "H3_03803", time: "280s" } },
+      "0.9MP": { 1: { id: "H3_03789", time: "37s" }, 2: { id: "H3_03790", time: "55s" }, 3: { id: "H3_03791", time: "73s" }, 4: { id: "H3_03792", time: "123s" }, 5: { id: "H3_03793", time: "149s" }, 6: { id: "H3_03794", time: "206s" }, 7: { id: "H3_03804", time: "239s" } },
+      "1.0MP": { 1: { id: "H3_03795", time: "41s" }, 2: { id: "H3_03796", time: "61s" }, 3: { id: "H3_03797", time: "87s" }, 4: { id: "H3_03798", time: "139s" }, 5: { id: "H3_03799", time: "170s" }, 6: { id: "H3_03800", time: "237s" }, 7: { id: "H3_03805", time: "275s" } }
+    };
+
+    // Render Table Header
+    const headerRow = document.getElementById("headerRow");
+    durations.forEach(d => {
+      const th = document.createElement("th");
+      th.textContent = `${d}s`;
+      headerRow.appendChild(th);
+    });
+
+    // Render Table Body
+    const tbody = document.getElementById("tableBody");
+    resolutions.forEach(mp => {
+      const tr = document.createElement("tr");
+      
+      const rowHeader = document.createElement("td");
+      rowHeader.className = "sticky-col";
+      rowHeader.textContent = mp;
+      tr.appendChild(rowHeader);
+
+      durations.forEach(d => {
+        const td = document.createElement("td");
+        const entry = benchmarkData[mp]?.[d];
+
+        if (entry) {
+          const btn = document.createElement("div");
+          btn.className = "cell-btn";
+          btn.innerHTML = `<span class="gen-time">${entry.time}</span><span class="run-id">${entry.id}</span>`;
+          btn.onclick = () => openModal(mp, d, entry.id, entry.time);
+          td.appendChild(btn);
+        } else {
+          td.innerHTML = `<span class="empty-cell">-</span>`;
+        }
+
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    // Modal Handlers
+    const modal = document.getElementById("videoModal");
+    const modalVideo = document.getElementById("modalVideo");
+    const videoSource = document.getElementById("videoSource");
+
+    function openModal(mp, duration, runId, time) {
+      document.getElementById("modalTitle").textContent = `${mp} @ ${duration}s Duration`;
+      document.getElementById("modalMeta").textContent = `Run ID: ${runId}`;
+      document.getElementById("modalTime").textContent = `Gen Time: ${time}`;
+      
+      videoSource.src = getVideoUrl(runId);
+      modalVideo.load();
+      modal.classList.add("active");
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      modalVideo.pause();
+      videoSource.src = "";
+    }
+
+    // Close on overlay click or Escape key
+    modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+  </script>
+</body>
+</html>
