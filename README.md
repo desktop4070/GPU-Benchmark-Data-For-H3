@@ -10,8 +10,10 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 
 | Category | Specification |
 | :--- | :--- |
-| **Driver / OS** | Driver `610.74` / Windows 11 |
+| **OS** | Windows 11 25H2 |
+| **CPU** | Intel Core i9-12900K |
 | **GPU** | NVIDIA GeForce RTX 5070 Ti 16GB (`sm_120`) |
+| **Driver** | `610.74` |
 | **System RAM** | 64GB DDR5 @ 5400 MT/s|
 | **Pagefile.sys** | 65536 MB |
 | **Software Environment** | PyTorch `2.13.0+cu130` · CUDA `13.0` |
