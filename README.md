@@ -1,4 +1,4 @@
-# H3 GPU Benchmark Data (5070 Ti + 64GB DDR5)
+# GPU Benchmark Data for H3 (5070 Ti + 64GB DDR5)
 
 Testing generation times, visual quality, and prompt adherence across resolutions and durations (0.1-1.0MP / 1-15s).
 
