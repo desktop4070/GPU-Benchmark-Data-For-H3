@@ -216,7 +216,7 @@
     table.benchmark-grid th, table.benchmark-grid td {
       padding: 12px 4px;
       border: 1px solid var(--border);
-      min-width: 88px;
+      min-width: 90px;
     }
 
     table.benchmark-grid th {
@@ -292,10 +292,12 @@
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
     }
 
+    /* Bigger Generation Times in Table */
     .gen-time {
-      font-size: 1.05rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      font-weight: 800;
       color: #38bdf8;
+      letter-spacing: -0.3px;
     }
 
     .cell-btn.suboptimal .gen-time {
@@ -309,7 +311,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 78px;
+      max-width: 82px;
     }
 
     .empty-cell {
@@ -392,6 +394,44 @@
     }
     .close-btn:hover { color: white; }
 
+    /* Modal Meta Stats Bar */
+    .modal-stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.75rem 1.75rem;
+      background: #0f172a;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+    }
+
+    .stat-badge strong {
+      color: #fff;
+    }
+
+    .stat-badge.highlight {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent);
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+    .stat-badge.highlight strong {
+      color: #38bdf8;
+      font-size: 1.15rem;
+    }
+
     .video-container {
       background: #000;
       width: 100%;
@@ -418,7 +458,7 @@
     }
 
     .gate-title {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #fcd34d;
       margin-bottom: 0.75rem;
@@ -427,33 +467,62 @@
     .gate-msg {
       color: #e2e8f0;
       font-size: 0.95rem;
-      max-width: 520px;
+      max-width: 540px;
       line-height: 1.6;
       margin-bottom: 1.5rem;
+    }
+
+    .gate-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .gate-proceed-btn {
+      background: var(--accent);
+      color: #0b0f19;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      width: 100%;
+    }
+    .gate-proceed-btn:hover {
+      background: #7dd3fc;
+    }
+
+    .gate-checkbox-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
 
     .gate-checkbox-label {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      color: #f8fafc;
-      font-size: 0.95rem;
+      gap: 0.5rem;
       cursor: pointer;
       background: #1e293b;
-      padding: 12px 18px;
-      border-radius: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
       border: 1px solid var(--border);
-      transition: all 0.15s ease;
     }
-
     .gate-checkbox-label:hover {
-      border-color: var(--accent);
-      background: #24344d;
+      border-color: #475569;
     }
-
     .gate-checkbox-label input {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       cursor: pointer;
       accent-color: var(--accent);
     }
@@ -593,18 +662,35 @@ N/A</div>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
 
+      <!-- Stats Bar: Actual Resolution, Actual Frames, and Big Gen Time -->
+      <div class="modal-stats-bar">
+        <div class="stat-badge highlight">⏱️ Gen Time: <strong id="modalGenTime">-</strong></div>
+        <div class="stat-badge">📐 Actual Res: <strong id="modalRes">Detecting...</strong></div>
+        <div class="stat-badge">🎞️ Actual Frames: <strong id="modalFrames">Detecting...</strong></div>
+      </div>
+
       <div class="video-container">
         <!-- Warning Gate -->
         <div class="video-gate" id="videoGate">
-          <div class="gate-title" id="gateTitle">⚠️ Content Notice</div>
+          <div class="gate-title" id="gateTitle">⚠️ Notice</div>
           <div class="gate-msg" id="gateMsg"></div>
-          <label class="gate-checkbox-label">
-            <input type="checkbox" id="gateCheckbox" onchange="unlockVideo()">
-            <span>I understand, but I want to see the video anyways.</span>
-          </label>
+
+          <div class="gate-actions">
+            <button class="gate-proceed-btn" onclick="unlockVideo()">I understand, show the video anyways</button>
+            <div class="gate-checkbox-options">
+              <label class="gate-checkbox-label" id="labelDismiss01" style="display: none;">
+                <input type="checkbox" id="checkDismiss01">
+                <span>Don't show this message again for 0.1MP videos</span>
+              </label>
+              <label class="gate-checkbox-label" id="labelDismissShort" style="display: none;">
+                <input type="checkbox" id="checkDismissShort">
+                <span>Don't show this message again for &le; 5s videos</span>
+              </label>
+            </div>
+          </div>
         </div>
 
-        <video id="modalVideo" controls loop muted playsinline>
+        <video id="modalVideo" controls loop playsinline>
           Your browser does not support the video tag.
         </video>
         <div class="error-box" id="errorBox">
@@ -615,7 +701,6 @@ N/A</div>
 
       <div class="modal-footer">
         <div id="modalFilename">File: -</div>
-        <div id="modalTime">Gen Time: -</div>
         <div><a id="modalDirectLink" class="direct-link" href="" target="_blank">Direct Video Link ↗</a></div>
       </div>
     </div>
@@ -695,10 +780,38 @@ N/A</div>
     const errorBox = document.getElementById("errorBox");
     const errorLink = document.getElementById("errorLink");
     const modalDirectLink = document.getElementById("modalDirectLink");
+    const modalRes = document.getElementById("modalRes");
+    const modalFrames = document.getElementById("modalFrames");
+    const modalGenTime = document.getElementById("modalGenTime");
+
     const videoGate = document.getElementById("videoGate");
     const gateTitle = document.getElementById("gateTitle");
     const gateMsg = document.getElementById("gateMsg");
-    const gateCheckbox = document.getElementById("gateCheckbox");
+    const labelDismiss01 = document.getElementById("labelDismiss01");
+    const labelDismissShort = document.getElementById("labelDismissShort");
+    const checkDismiss01 = document.getElementById("checkDismiss01");
+    const checkDismissShort = document.getElementById("checkDismissShort");
+
+    // Dynamic resolution and frame metadata loader
+    modalVideo.onloadedmetadata = () => {
+      const w = modalVideo.videoWidth;
+      const h = modalVideo.videoHeight;
+      const dur = modalVideo.duration;
+      
+      if (w && h) {
+        modalRes.textContent = `${w} × ${h} (${((w * h) / 1000000).toFixed(2)} MP)`;
+      } else {
+        modalRes.textContent = "Unknown";
+      }
+
+      if (dur && !isNaN(dur)) {
+        // 24 FPS is standard export frame rate
+        const frames = Math.round(dur * 24);
+        modalFrames.textContent = `${frames} frames (${dur.toFixed(1)}s @ 24fps)`;
+      } else {
+        modalFrames.textContent = "Unknown";
+      }
+    };
 
     function openModal(mp, duration, fullName, time) {
       currentMpIndex = resolutions.indexOf(mp);
@@ -708,7 +821,9 @@ N/A</div>
       
       document.getElementById("modalTitle").textContent = `${mp} @ ${duration}s Duration`;
       document.getElementById("modalFilename").textContent = `File: ${fullName}.mp4`;
-      document.getElementById("modalTime").textContent = `Gen Time: ${time}`;
+      modalGenTime.textContent = time;
+      modalRes.textContent = "Detecting...";
+      modalFrames.textContent = "Detecting...";
       
       modalDirectLink.href = videoUrl;
       errorLink.href = videoUrl;
@@ -720,39 +835,69 @@ N/A</div>
         errorBox.style.display = "block";
       };
 
+      // Set audio unmuted at 80% volume
+      modalVideo.muted = false;
+      modalVideo.volume = 0.8;
       modalVideo.src = videoUrl;
       modalVideo.load();
 
-      // Reset checkbox
-      gateCheckbox.checked = false;
+      // Check Saved Dismiss Preferences from LocalStorage
+      const dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
+      const dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
 
-      // Warnings
       let warnings = [];
-      if (mp === "0.1MP") {
+      let show01Option = false;
+      let showShortOption = false;
+
+      if (mp === "0.1MP" && !dismiss01) {
         warnings.push("<strong>0.1MP</strong> has glitchy artifacts and is not recommended for H3.");
+        show01Option = true;
       }
-      if (duration <= 5) {
+      if (duration <= 5 && !dismissShort) {
         warnings.push("<strong>≤5s videos</strong> look fine visually, but feel rushed and too fast-paced for the prompt.");
+        showShortOption = true;
       }
 
       if (warnings.length > 0) {
         gateTitle.textContent = mp === "0.1MP" ? "⚠️ Not Recommended Resolution" : "ℹ️ Short Duration Notice";
         gateMsg.innerHTML = warnings.join("<br><br>");
+
+        labelDismiss01.style.display = show01Option ? "flex" : "none";
+        labelDismissShort.style.display = showShortOption ? "flex" : "none";
+        checkDismiss01.checked = false;
+        checkDismissShort.checked = false;
+
         videoGate.style.display = "flex";
         modalVideo.pause();
       } else {
         videoGate.style.display = "none";
-        modalVideo.play().catch(() => {});
+        startVideoWithAudio();
       }
       
       modal.classList.add("active");
     }
 
     function unlockVideo() {
-      if (gateCheckbox.checked) {
-        videoGate.style.display = "none";
-        modalVideo.play().catch(() => {});
+      // Save any checked preferences
+      if (checkDismiss01.checked) {
+        localStorage.setItem("h3_dismiss_01mp", "true");
       }
+      if (checkDismissShort.checked) {
+        localStorage.setItem("h3_dismiss_short", "true");
+      }
+
+      videoGate.style.display = "none";
+      startVideoWithAudio();
+    }
+
+    function startVideoWithAudio() {
+      modalVideo.muted = false;
+      modalVideo.volume = 0.8;
+      modalVideo.play().catch(() => {
+        // Fallback for browsers that require strict muted autoplay
+        modalVideo.muted = true;
+        modalVideo.play().catch(() => {});
+      });
     }
 
     function closeModal() {
@@ -761,7 +906,6 @@ N/A</div>
       modalVideo.removeAttribute("src");
       modalVideo.load();
       videoGate.style.display = "none";
-      gateCheckbox.checked = false;
       currentMpIndex = -1;
       currentDuration = -1;
     }
