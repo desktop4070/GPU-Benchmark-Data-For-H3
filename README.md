@@ -19,6 +19,6 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 | **Diffusion Model** | `minimax_h3_fl2va_pruned_int8_convrot.safetensors` |
 | **Text Encoder** | `qwen3vl_32b_minimax_h3_int8_convrot.safetensors` |
 | **Attention** | Comfy Kitchen Attention |
-| **Turbo LoRA** | larryvrh's `minimax_h3_turbo_v4_step600_ema.safetensors` @ 1.00 |
+| **Turbo LoRA** | larryvrh's [`minimax_h3_turbo_v4_step600_ema.safetensors`](https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors) @ 1.00 weight |
 | **Sampler / Scheduler** | `er_sde` / `sgm_uniform` |
 | **Steps** | 8 |
