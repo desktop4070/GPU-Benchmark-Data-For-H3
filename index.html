@@ -61,6 +61,7 @@
       border-collapse: collapse;
       text-align: center;
       font-size: 0.85rem;
+      table-layout: fixed; /* Locks column widths so nothing shifts */
     }
 
     th, td {
@@ -96,14 +97,15 @@
       padding: 4px 2px;
       border-radius: 6px;
       cursor: pointer;
-      transition: all 0.15s ease;
-      background: rgba(255,255,255,0.03);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent; /* Reserves the 1px border space in advance */
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .cell-btn:hover {
-      transform: scale(1.05);
-      border: 1px solid var(--accent);
-      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.18);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
     }
 
     .gen-time {
