@@ -228,7 +228,6 @@
       z-index: 1;
     }
 
-    /* Column Header Accents */
     th.short-col {
       background: #111724;
       color: #94a3b8;
@@ -275,7 +274,7 @@
       font-weight: normal;
     }
 
-    /* Cell Buttons - Base */
+    /* Cell Buttons */
     .cell-btn {
       display: flex;
       flex-direction: column;
@@ -286,10 +285,10 @@
       padding: 8px 2px;
       border-radius: 8px;
       cursor: pointer;
+      user-select: none;
       transition: all 0.15s ease;
     }
 
-    /* Tier 1: Recommended (0.2MP+ @ 7 sec–15 sec) */
     .cell-btn.tier-rec {
       background: rgba(56, 189, 248, 0.06);
       border: 1px solid rgba(56, 189, 248, 0.28);
@@ -306,7 +305,6 @@
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
     }
 
-    /* Tier 2: Short Duration (≤6 sec) */
     .cell-btn.tier-short {
       background: rgba(100, 116, 139, 0.08);
       border: 1px dashed rgba(148, 163, 184, 0.3);
@@ -323,7 +321,6 @@
       box-shadow: 0 0 10px rgba(148, 163, 184, 0.3);
     }
 
-    /* Tier 3: 0.1MP Unintended Row */
     .cell-btn.tier-unintended {
       background: rgba(168, 85, 247, 0.07);
       border: 1px solid rgba(168, 85, 247, 0.25);
@@ -348,6 +345,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 90%;
+      pointer-events: none;
     }
 
     .empty-cell {
@@ -430,7 +428,6 @@
     }
     .close-btn:hover { color: white; }
 
-    /* Modal Meta Stats Bar */
     .modal-stats-bar {
       display: flex;
       flex-wrap: wrap;
@@ -479,7 +476,6 @@
       position: relative;
     }
 
-    /* Warning Gate Overlay */
     .video-gate {
       position: absolute;
       inset: 0;
@@ -619,7 +615,6 @@
         Interactive matrix comparing generation times & visual fidelity across resolutions and durations.
       </p>
 
-      <!-- Collapsible Workflow, Hardware Specs & Prompt -->
       <details class="workflow-details">
         <summary class="workflow-summary">
           <span>⚙️ Benchmark Environment, Workflow Settings & Prompt</span>
@@ -683,7 +678,7 @@ N/A</div>
           </tr>
         </thead>
         <tbody id="tableBody">
-          <!-- Rows dynamically generated -->
+          <!-- Populated instantly via script -->
         </tbody>
       </table>
     </div>
@@ -700,11 +695,11 @@ N/A</div>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
 
-      <!-- Stats Bar: Clean Resolution, Clean Frame Count, and Big Gen Time -->
+      <!-- Instant Stats Bar -->
       <div class="modal-stats-bar">
         <div class="stat-badge highlight">Gen Time: <strong id="modalGenTime">-</strong></div>
-        <div class="stat-badge">Resolution: <strong id="modalRes">Detecting...</strong></div>
-        <div class="stat-badge">Frame count: <strong id="modalFrames">Detecting...</strong></div>
+        <div class="stat-badge">Resolution: <strong id="modalRes">-</strong></div>
+        <div class="stat-badge">Frame count: <strong id="modalFrames">-</strong></div>
       </div>
 
       <div class="video-container">
@@ -728,7 +723,7 @@ N/A</div>
           </div>
         </div>
 
-        <video id="modalVideo" controls loop playsinline>
+        <video id="modalVideo" preload="none" controls loop playsinline>
           Your browser does not support the video tag.
         </video>
         <div class="error-box" id="errorBox">
@@ -745,16 +740,33 @@ N/A</div>
   </div>
 
   <script>
-    const getVideoUrl = (fullName) => `./Videos/${fullName}.mp4`;
+    const RESOLUTION_MAP = {
+      "0.1MP": "416 × 224",
+      "0.2MP": "608 × 352",
+      "0.3MP": "736 × 416",
+      "0.4MP": "864 × 480",
+      "0.5MP": "960 × 544",
+      "0.6MP": "1056 × 608",
+      "0.7MP": "1152 × 640",
+      "0.8MP": "1216 × 672",
+      "0.9MP": "1280 × 736",
+      "0.98MP": "1344 × 768",
+      "1.0MP": "1376 × 768",
+      "1.2MP": "1504 × 832",
+      "1.5MP": "1664 × 928",
+      "1.8MP": "1824 × 1024",
+      "2.0MP": "1920 × 1088"
+    };
 
+    const FPS = 24;
     const durations = Array.from({ length: 15 }, (_, i) => i + 1);
     const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "1.0MP"];
 
-    // Navigation tracking
     let currentMpIndex = -1;
     let currentDuration = -1;
+    let dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
+    let dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
 
-    // Full Benchmark Data
     const benchmarkData = {
       "0.1MP": { 1: { name: "MiniMax_H3_03684_", time: "13s" }, 2: { name: "MiniMax_H3_03685_", time: "12s" }, 3: { name: "MiniMax_H3_03686_", time: "14s" }, 4: { name: "MiniMax_H3_03687_", time: "17s" }, 5: { name: "MiniMax_H3_03688_", time: "19s" }, 6: { name: "MiniMax_H3_03689_", time: "22s" }, 7: { name: "MiniMax_H3_03690_", time: "25s" }, 8: { name: "MiniMax_H3_03691_", time: "27s" }, 9: { name: "MiniMax_H3_03692_", time: "30s" }, 10: { name: "MiniMax_H3_03693_", time: "33s" }, 11: { name: "MiniMax_H3_03694_", time: "37s" }, 12: { name: "MiniMax_H3_03695_", time: "39s" }, 13: { name: "MiniMax_H3_03696_", time: "41s" }, 14: { name: "MiniMax_H3_03697_", time: "43s" }, 15: { name: "MiniMax_H3_03698_", time: "47s" } },
       "0.2MP": { 1: { name: "MiniMax_H3_03699_", time: "15s" }, 2: { name: "MiniMax_H3_03700_", time: "18s" }, 3: { name: "MiniMax_H3_03701_", time: "21s" }, 4: { name: "MiniMax_H3_03702_", time: "27s" }, 5: { name: "MiniMax_H3_03703_", time: "29s" }, 6: { name: "MiniMax_H3_03704_", time: "37s" }, 7: { name: "MiniMax_H3_03705_", time: "41s" }, 8: { name: "MiniMax_H3_03706_", time: "45s" }, 9: { name: "MiniMax_H3_03707_", time: "54s" }, 10: { name: "MiniMax_H3_03708_", time: "59s" }, 11: { name: "MiniMax_H3_03709_", time: "68s" }, 12: { name: "MiniMax_H3_03710_", time: "74s" }, 13: { name: "MiniMax_H3_03711_", time: "88s" }, 14: { name: "MiniMax_H3_03712_", time: "100s" }, 15: { name: "MiniMax_H3_03713_", time: "98s" } },
@@ -768,7 +780,7 @@ N/A</div>
       "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" } }
     };
 
-    // Render Table Header with Distinct Column Accents & "sec" label
+    // Render Table Header
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
@@ -782,8 +794,10 @@ N/A</div>
       headerRow.appendChild(th);
     });
 
-    // Render Table Rows with 3-Tier Classification
+    // Render Table Rows in single fragment pass
     const tbody = document.getElementById("tableBody");
+    const fragment = document.createDocumentFragment();
+
     resolutions.forEach((mp) => {
       const tr = document.createElement("tr");
       
@@ -797,31 +811,31 @@ N/A</div>
         const entry = benchmarkData[mp]?.[d];
 
         if (entry) {
-          const btn = document.createElement("div");
-          
-          // Determine 3-Tier Class
-          if (mp === "0.1MP") {
-            btn.className = "cell-btn tier-unintended";
-          } else if (d <= 6) {
-            btn.className = "cell-btn tier-short";
-          } else {
-            btn.className = "cell-btn tier-rec";
-          }
-
-          btn.innerHTML = `<span class="gen-time">${entry.time}</span><span class="video-name" title="${entry.name}">${entry.name}</span>`;
-          btn.onclick = () => openModal(mp, d, entry.name, entry.time);
-          td.appendChild(btn);
+          const tierClass = mp === "0.1MP" ? "tier-unintended" : (d <= 6 ? "tier-short" : "tier-rec");
+          td.innerHTML = `
+            <div class="cell-btn ${tierClass}" data-mp="${mp}" data-dur="${d}" data-name="${entry.name}" data-time="${entry.time}">
+              <span class="gen-time">${entry.time}</span>
+              <span class="video-name" title="${entry.name}">${entry.name}</span>
+            </div>`;
         } else {
           td.innerHTML = `<span class="empty-cell">-</span>`;
         }
-
         tr.appendChild(td);
       });
 
-      tbody.appendChild(tr);
+      fragment.appendChild(tr);
+    });
+    tbody.appendChild(fragment);
+
+    // Event delegation on table body for fastest response
+    tbody.addEventListener("click", (e) => {
+      const btn = e.target.closest(".cell-btn");
+      if (!btn) return;
+      const { mp, dur, name, time } = btn.dataset;
+      openModal(mp, parseInt(dur, 10), name, time);
     });
 
-    // Modal & Gate Controller
+    // Modal elements
     const modal = document.getElementById("videoModal");
     const modalVideo = document.getElementById("modalVideo");
     const errorBox = document.getElementById("errorBox");
@@ -830,6 +844,8 @@ N/A</div>
     const modalRes = document.getElementById("modalRes");
     const modalFrames = document.getElementById("modalFrames");
     const modalGenTime = document.getElementById("modalGenTime");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalFilename = document.getElementById("modalFilename");
 
     const videoGate = document.getElementById("videoGate");
     const gateTitle = document.getElementById("gateTitle");
@@ -839,56 +855,33 @@ N/A</div>
     const checkDismiss01 = document.getElementById("checkDismiss01");
     const checkDismissShort = document.getElementById("checkDismissShort");
 
-    // Dynamic resolution and frame metadata loader (Clean output)
-    modalVideo.onloadedmetadata = () => {
-      const w = modalVideo.videoWidth;
-      const h = modalVideo.videoHeight;
-      const dur = modalVideo.duration;
-      
-      if (w && h) {
-        modalRes.textContent = `${w} × ${h}`;
-      } else {
-        modalRes.textContent = "Unknown";
-      }
-
-      if (dur && !isNaN(dur)) {
-        const frames = Math.round(dur * 24);
-        modalFrames.textContent = `${frames} frames`;
-      } else {
-        modalFrames.textContent = "Unknown";
-      }
+    modalVideo.onerror = () => {
+      modalVideo.style.display = "none";
+      errorBox.style.display = "block";
     };
 
     function openModal(mp, duration, fullName, time) {
       currentMpIndex = resolutions.indexOf(mp);
       currentDuration = duration;
 
-      const videoUrl = getVideoUrl(fullName);
+      const videoUrl = `./Videos/${fullName}.mp4`;
       
-      document.getElementById("modalTitle").textContent = `${mp} @ ${duration} sec Duration`;
-      document.getElementById("modalFilename").textContent = `File: ${fullName}.mp4`;
+      // Instantly set hardcoded and calculated values
+      modalTitle.textContent = `${mp} @ ${duration} sec Duration`;
+      modalFilename.textContent = `File: ${fullName}.mp4`;
       modalGenTime.textContent = time;
-      modalRes.textContent = "Detecting...";
-      modalFrames.textContent = "Detecting...";
+      modalRes.textContent = RESOLUTION_MAP[mp] || "Auto";
+      modalFrames.textContent = `${duration * FPS} frames`;
       
       modalDirectLink.href = videoUrl;
       errorLink.href = videoUrl;
       errorBox.style.display = "none";
       modalVideo.style.display = "block";
 
-      modalVideo.onerror = () => {
-        modalVideo.style.display = "none";
-        errorBox.style.display = "block";
-      };
-
       modalVideo.muted = false;
       modalVideo.src = videoUrl;
-      modalVideo.load();
 
-      // Check Saved Dismiss Preferences
-      const dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
-      const dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
-
+      // Warnings check
       let warnings = [];
       let show01Option = false;
       let showShortOption = false;
@@ -930,9 +923,11 @@ N/A</div>
 
     function unlockVideo() {
       if (checkDismiss01.checked) {
+        dismiss01 = true;
         localStorage.setItem("h3_dismiss_01mp", "true");
       }
       if (checkDismissShort.checked) {
+        dismissShort = true;
         localStorage.setItem("h3_dismiss_short", "true");
       }
 
@@ -950,7 +945,6 @@ N/A</div>
       currentDuration = -1;
     }
 
-    // Arrow Key Navigation
     function navigate(deltaMp, deltaDur) {
       if (!modal.classList.contains("active") || currentMpIndex === -1) return;
 
