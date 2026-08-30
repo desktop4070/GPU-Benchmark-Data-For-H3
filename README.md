@@ -25,4 +25,24 @@ Interactive benchmark matrix comparing generation times and visual quality acros
 | **Sampler / Scheduler** | `er_sde` / `sgm_uniform` |
 | **Steps** | 8 |
 
-| **Prompt** | **integrated_multimodal_description:**<br>[Shot 1] Anime. Fantasy. A dense, sun-dappled forest clearing with towering, mossy trees. The young man in peasant clothing (S2) stands near an ancient tree trunk, looking disinterested as he rummages through a worn leather satchel. The young woman in a dirty and torn royal dress (S1) stands close by, gesturing out into the forest with animated frustration and pleading with him to pay attention, but he refuses to make eye contact. The camera pans slowly, tracking the vast wilderness of the forest and the friction between their postures.<br><br>[Shot 2] The shot cuts to a close-up of the woman (S1). Her face is flushed with indignation, her eyebrows knit tightly, and her mouth forms an expression of sharp, wordless protest as her frustration reaches a breaking point.<br><br>[Shot 3] The shot cuts to a close-up of a unique looking artifact that was pulled from the satchel, a GeForce RTX 5070 Ti; it visibly shines against his rough glove.<br><br>[Shot 4] The shot transitions to a wider framing of the pair. The woman (S1) steps forward, clutching the fabric of her dress in an outburst of intense, visible emotion, while the man (S2) replies in a smug manner, snaps his satchel shut, and turns his back to walk away, leaving her standing alone as she watches him go.<br><br>**overall_soundscape:**<br>Quiet forest ambience. No other voices are heard.<br><br>**non_diegetic_music:**<br>N/A |
+| **Steps** | 8 |
+
+---
+
+### Prompt
+
+```yaml
+integrated_multimodal_description: 
+[Shot 1] Anime. Fantasy. A dense, sun-dappled forest clearing with towering, mossy trees. The young man in peasant clothing (S2) stands near an ancient tree trunk, looking disinterested as he rummages through a worn leather satchel. The young woman in a dirty and torn royal dress (S1) stands close by, gesturing out into the forest with animated frustration and pleading with him to pay attention, but he refuses to make eye contact. The camera pans slowly, tracking the vast wilderness of the forest and the friction between their postures.
+
+[Shot 2] The shot cuts to a close-up of the woman (S1). Her face is flushed with indignation, her eyebrows knit tightly, and her mouth forms an expression of sharp, wordless protest as her frustration reaches a breaking point.
+
+[Shot 3] The shot cuts to a close-up of a unique looking artifact that was pulled from the satchel, a GeForce RTX 5070 Ti; it visibly shines against his rough glove.
+
+[Shot 4] The shot transitions to a wider framing of the pair. The woman (S1) steps forward, clutching the fabric of her dress in an outburst of intense, visible emotion, while the man (S2) replies in a smug manner, snaps his satchel shut, and turns his back to walk away, leaving her standing alone as she watches him go.
+
+overall_soundscape:
+Quiet forest ambience. No other voices are heard.
+
+non_diegetic_music:
+N/A```
