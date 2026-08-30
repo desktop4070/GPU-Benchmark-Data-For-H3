@@ -440,6 +440,9 @@
       border-radius: 18px;
       max-width: 1100px;
       width: 100%;
+      max-height: 94vh;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
       box-shadow: 0 25px 50px rgba(0,0,0,0.7);
       position: relative;
@@ -451,6 +454,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
     }
 
     .modal-title-wrap {
@@ -501,6 +505,7 @@
       background: #0f172a;
       border-bottom: 1px solid var(--border);
       font-size: 0.92rem;
+      flex-shrink: 0;
     }
 
     .stat-badge {
@@ -532,12 +537,13 @@
     .video-container {
       background: #000;
       width: 100%;
-      min-height: 480px;
+      min-height: 380px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden;
     }
 
     .video-gate {
@@ -625,7 +631,7 @@
 
     video {
       width: 100%;
-      max-height: 650px;
+      max-height: 560px;
       display: block;
     }
 
@@ -643,16 +649,91 @@
       font-weight: 600;
     }
 
+    /* Collapsible Prompt Drawer inside Modal */
+    .modal-prompt-drawer {
+      border-top: 1px solid var(--border);
+      background: #090d16;
+      padding: 1rem 1.6rem;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      animation: promptSlide 0.18s ease-out;
+    }
+
+    @keyframes promptSlide {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .prompt-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .prompt-drawer-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-prompt-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      font-size: 0.76rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .copy-prompt-btn:hover {
+      color: #fff;
+      border-color: var(--accent);
+    }
+
     .modal-footer {
-      padding: 1.25rem 1.75rem;
+      padding: 1.15rem 1.75rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #111827;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .modal-footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    .modal-prompt-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .modal-prompt-btn:hover, .modal-prompt-btn.active {
+      background: #27364f;
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .direct-link {
@@ -713,7 +794,7 @@
           </table>
 
           <div class="prompt-label">Prompt Used for All Runs:</div>
-          <div class="prompt-box">integrated_multimodal_description: 
+          <div class="prompt-box" id="globalPromptText">integrated_multimodal_description: 
 [Shot 1] Anime. Fantasy. A dense, sun-dappled forest clearing with towering, mossy trees. The young man in peasant clothing (S2) stands near an ancient tree trunk, looking disinterested as he rummages through a worn leather satchel. The young woman in a dirty and torn royal dress (S1) stands close by, gesturing out into the forest with animated frustration and pleading with him to pay attention, but he refuses to make eye contact. The camera pans slowly, tracking the vast wilderness of the forest and the friction between their postures. [Shot 2] The shot cuts to a close-up of the woman (S1). Her face is flushed with indignation, her eyebrows knit tightly, and her mouth forms an expression of sharp, wordless protest as her frustration reaches a breaking point. [Shot 3] The shot cuts to a close-up of a unique looking artifact that was pulled from the satchel, a GeForce RTX 5070 Ti; it visibly shines against his rough glove. [Shot 4] The shot transitions to a wider framing of the pair. The woman (S1) steps forward, clutching the fabric of her dress in an outburst of intense, visible emotion, while the man (S2) replies in a smug manner, snaps his satchel shut, and turns his back to walk away, leaving her standing alone as she watches him go.
 
 overall_soundscape:
@@ -727,15 +808,15 @@ N/A</div>
       <div class="legend-bar">
         <div class="legend-item">
           <span class="badge-dot unintended"></span>
-          <span><strong>0.1MP:</strong> Unintended resolution (Flashing artifacts)</span>
+          <span><strong>0.1MP:</strong> Unintended resolution (Glitchy artifacts)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot short"></span>
-          <span><strong>&le; 6 sec:</strong> Short duration (Too short for this prompt)</span>
+          <span><strong>&le; 7 sec:</strong> Short duration (Too short for this prompt)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
-          <span><strong>0.2MP–1.0MP @ 7 sec–15 sec:</strong> Recommended range for this prompt</span>
+          <span><strong>0.2MP–1.0MP @ 8 sec–15 sec:</strong> Recommended range for this prompt</span>
         </div>
       </div>
     </header>
@@ -787,7 +868,7 @@ N/A</div>
               </label>
               <label class="gate-checkbox-label" id="labelDismissShort" style="display: none;">
                 <input type="checkbox" id="checkDismissShort">
-                <span>Don't show this message again for &le; 6 sec videos</span>
+                <span>Don't show this message again for &le; 7 sec videos</span>
               </label>
             </div>
           </div>
@@ -802,9 +883,24 @@ N/A</div>
         </div>
       </div>
 
+      <!-- Collapsible Prompt Drawer -->
+      <div class="modal-prompt-drawer" id="modalPromptDrawer">
+        <div class="prompt-drawer-header">
+          <span class="prompt-drawer-title">Prompt Used for Benchmark</span>
+          <button class="copy-prompt-btn" id="copyPromptBtn" onclick="copyPrompt()">Copy Prompt</button>
+        </div>
+        <div class="prompt-box" id="modalPromptContent" style="margin: 0; padding: 0.75rem; font-size: 0.8rem;"></div>
+      </div>
+
       <div class="modal-footer">
         <div id="modalFilename">File: -</div>
-        <div><a id="modalDirectLink" class="direct-link" href="" target="_blank">Direct Video Link</a></div>
+        <div class="modal-footer-actions">
+          <button type="button" class="modal-prompt-btn" id="modalPromptBtn" onclick="toggleModalPrompt()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span id="promptBtnLabel">View Prompt</span>
+          </button>
+          <a id="modalDirectLink" class="direct-link" href="" target="_blank">Direct Video Link</a>
+        </div>
       </div>
     </div>
   </div>
@@ -838,6 +934,7 @@ N/A</div>
     let dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
     let dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
     let timeFormat = localStorage.getItem("h3_time_format") || "seconds"; // 'seconds' or 'minutes'
+    let promptVisible = false;
 
     const benchmarkData = {
       "0.1MP": { 1: { name: "MiniMax_H3_03684_", time: "13s" }, 2: { name: "MiniMax_H3_03685_", time: "12s" }, 3: { name: "MiniMax_H3_03686_", time: "14s" }, 4: { name: "MiniMax_H3_03687_", time: "17s" }, 5: { name: "MiniMax_H3_03688_", time: "19s" }, 6: { name: "MiniMax_H3_03689_", time: "22s" }, 7: { name: "MiniMax_H3_03690_", time: "25s" }, 8: { name: "MiniMax_H3_03691_", time: "27s" }, 9: { name: "MiniMax_H3_03692_", time: "30s" }, 10: { name: "MiniMax_H3_03693_", time: "33s" }, 11: { name: "MiniMax_H3_03694_", time: "37s" }, 12: { name: "MiniMax_H3_03695_", time: "39s" }, 13: { name: "MiniMax_H3_03696_", time: "41s" }, 14: { name: "MiniMax_H3_03697_", time: "43s" }, 15: { name: "MiniMax_H3_03698_", time: "47s" } },
@@ -901,11 +998,11 @@ N/A</div>
       });
     });
 
-    // Render Table Header
+    // Render Table Header (<= 7s is short, >= 8s is recommended)
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
-      if (d <= 6) {
+      if (d <= 7) {
         th.className = "short-col";
         th.innerHTML = `${d} sec<span class="col-subtext">Too short</span>`;
       } else {
@@ -932,7 +1029,7 @@ N/A</div>
         const entry = benchmarkData[mp]?.[d];
 
         if (entry) {
-          const tierClass = mp === "0.1MP" ? "tier-unintended" : (d <= 6 ? "tier-short" : "tier-rec");
+          const tierClass = mp === "0.1MP" ? "tier-unintended" : (d <= 7 ? "tier-short" : "tier-rec");
           td.innerHTML = `
             <div class="cell-btn ${tierClass}" data-mp="${mp}" data-dur="${d}" data-name="${entry.name}" data-time="${entry.time}">
               <span class="gen-time">${formatTime(entry.time, timeFormat)}</span>
@@ -976,6 +1073,13 @@ N/A</div>
     const checkDismiss01 = document.getElementById("checkDismiss01");
     const checkDismissShort = document.getElementById("checkDismissShort");
 
+    const modalPromptDrawer = document.getElementById("modalPromptDrawer");
+    const modalPromptContent = document.getElementById("modalPromptContent");
+    const modalPromptBtn = document.getElementById("modalPromptBtn");
+    const promptBtnLabel = document.getElementById("promptBtnLabel");
+    const globalPromptText = document.getElementById("globalPromptText");
+    const copyPromptBtn = document.getElementById("copyPromptBtn");
+
     modalVideo.onerror = () => {
       modalVideo.style.display = "none";
       errorBox.style.display = "block";
@@ -988,7 +1092,6 @@ N/A</div>
 
       const videoUrl = `./Videos/${fullName}.mp4`;
       
-      // Instantly set formatted values
       modalTitle.textContent = `${mp} @ ${duration} sec Duration`;
       modalFilename.textContent = `File: ${fullName}.mp4`;
       modalGenTime.textContent = formatTime(time, timeFormat);
@@ -1003,17 +1106,22 @@ N/A</div>
       modalVideo.muted = false;
       modalVideo.src = videoUrl;
 
+      // Populate prompt text in drawer
+      if (globalPromptText) {
+        modalPromptContent.textContent = globalPromptText.textContent;
+      }
+
       // Warnings check
       let warnings = [];
       let show01Option = false;
       let showShortOption = false;
 
       if (mp === "0.1MP" && !dismiss01) {
-        warnings.push("<strong>0.1MP</strong> has flashing artifacts and is not recommended for H3.");
+        warnings.push("<strong>0.1MP</strong> has glitchy artifacts and is not recommended for H3.");
         show01Option = true;
       }
-      if (duration <= 6 && !dismissShort) {
-        warnings.push("<strong>&le; 6 sec</strong> is fine for certain prompts, but too short for this specific prompt.");
+      if (duration <= 7 && !dismissShort) {
+        warnings.push("<strong>&le; 7 sec</strong> is fine for certain prompts, but too short for this specific prompt.");
         showShortOption = true;
       }
 
@@ -1064,12 +1172,39 @@ N/A</div>
       startVideoWithAudio();
     }
 
+    function toggleModalPrompt() {
+      promptVisible = !promptVisible;
+      if (promptVisible) {
+        modalPromptDrawer.style.display = "flex";
+        modalPromptBtn.classList.add("active");
+        promptBtnLabel.textContent = "Hide Prompt";
+      } else {
+        modalPromptDrawer.style.display = "none";
+        modalPromptBtn.classList.remove("active");
+        promptBtnLabel.textContent = "View Prompt";
+      }
+    }
+
+    function copyPrompt() {
+      if (!globalPromptText) return;
+      navigator.clipboard.writeText(globalPromptText.textContent).then(() => {
+        copyPromptBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copyPromptBtn.textContent = "Copy Prompt";
+        }, 1800);
+      });
+    }
+
     function closeModal() {
       modal.classList.remove("active");
       modalVideo.pause();
       modalVideo.removeAttribute("src");
       modalVideo.load();
       videoGate.style.display = "none";
+      modalPromptDrawer.style.display = "none";
+      modalPromptBtn.classList.remove("active");
+      promptBtnLabel.textContent = "View Prompt";
+      promptVisible = false;
       currentMpIndex = -1;
       currentDuration = -1;
       currentActiveRawTime = "";
