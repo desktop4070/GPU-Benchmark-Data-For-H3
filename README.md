@@ -1,4 +1,4 @@
-# MiniMax H3 5070 Ti + 64GB DDR5 Benchmark Data
+# H3 GPU Benchmark Data (5070 Ti + 64GB DDR5)
 
 Benchmark matrix comparing generation times and visual quality across resolutions (0.1-1.0MP) and durations (1-15s).
 
