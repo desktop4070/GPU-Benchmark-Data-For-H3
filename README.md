@@ -2,11 +2,11 @@
 
 Benchmark matrix comparing generation times and visual quality across resolutions (0.1-1.0MP) and durations (1-15s).
 
-🔗 **Live Interactive Grid:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
+**Live Interactive Grid:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
 
 ---
 
-### ⚙️ Benchmark & Workflow Settings
+### Benchmark & Workflow Settings
 
 | Category | Specification |
 | :--- | :--- |
