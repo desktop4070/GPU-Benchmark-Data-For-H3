@@ -1,6 +1,6 @@
 # H3 GPU Benchmark Data (5070 Ti + 64GB DDR5)
 
-Comparing generation times, visual quality, and prompt adherence across resolutions and durations (0.1-1.0MP, 1-15s).
+Testing generation times, visual quality, and prompt adherence across resolutions and durations (0.1-1.0MP, 1-15s).
 
 **Live Interactive Grid:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
 
