@@ -926,9 +926,6 @@ N/A</div>
         console.log("Playback interaction pending:", err);
       });
     }
-      
-      modal.classList.add("active");
-    }
 
     function unlockVideo() {
       if (checkDismiss01.checked) {
@@ -940,15 +937,6 @@ N/A</div>
 
       videoGate.style.display = "none";
       startVideoWithAudio();
-    }
-
-    function startVideoWithAudio() {
-      modalVideo.muted = false;
-      modalVideo.play().catch(() => {
-        // Fallback for strict browser policies
-        modalVideo.muted = true;
-        modalVideo.play().catch(() => {});
-      });
     }
 
     function closeModal() {
