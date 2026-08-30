@@ -38,6 +38,32 @@
       margin-bottom: 2rem;
     }
 
+    .top-nav {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .gh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #1e293b;
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.15s ease;
+    }
+
+    .gh-btn:hover {
+      background: #27364f;
+      border-color: var(--accent);
+    }
+
     h1 {
       font-size: 2.5rem;
       font-weight: 800;
@@ -52,14 +78,93 @@
       color: var(--text-muted);
       font-size: 1.05rem;
       max-width: 900px;
-      margin: 0 auto;
+      margin: 0 auto 1.25rem auto;
       line-height: 1.5;
     }
 
-    p.subtitle a {
+    /* Workflow Dropdown Accordion */
+    .workflow-details {
+      max-width: 1100px;
+      margin: 0 auto 2rem auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      text-align: left;
+    }
+
+    .workflow-summary {
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--accent);
+      background: #111827;
+      user-select: none;
+      font-size: 0.95rem;
+    }
+
+    .workflow-summary:hover {
+      background: #172133;
+    }
+
+    .workflow-body {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .specs-table th, .specs-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .specs-table th {
+      background: #111827;
+      width: 25%;
+      color: var(--text-muted);
+    }
+
+    .specs-table td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .specs-table a {
       color: var(--accent);
       text-decoration: underline;
-      text-underline-offset: 3px;
+      text-underline-offset: 2px;
+    }
+
+    .prompt-box {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .prompt-label {
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Legend Bar */
@@ -68,7 +173,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 1.5rem;
-      margin: 1.5rem 0 1.75rem 0;
+      margin-bottom: 1.75rem;
       font-size: 0.9rem;
     }
 
@@ -91,7 +196,7 @@
     .badge-dot.warn { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
     .badge-dot.rec { background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-    /* Table Styles */
+    /* Benchmark Table */
     .table-container {
       overflow-x: auto;
       background: var(--card-bg);
@@ -100,7 +205,7 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
 
-    table {
+    table.benchmark-grid {
       width: 100%;
       border-collapse: collapse;
       text-align: center;
@@ -108,13 +213,13 @@
       table-layout: fixed;
     }
 
-    th, td {
+    table.benchmark-grid th, table.benchmark-grid td {
       padding: 12px 4px;
       border: 1px solid var(--border);
       min-width: 88px;
     }
 
-    th {
+    table.benchmark-grid th {
       background: #0f172a;
       color: var(--text-muted);
       font-weight: 700;
@@ -287,17 +392,6 @@
     }
     .close-btn:hover { color: white; }
 
-    /* Modal Warning Banner */
-    .modal-warning-banner {
-      display: none;
-      background: rgba(245, 158, 11, 0.15);
-      border-bottom: 1px solid rgba(245, 158, 11, 0.35);
-      color: #fcd34d;
-      padding: 8px 1.75rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
     .video-container {
       background: #000;
       width: 100%;
@@ -307,6 +401,61 @@
       align-items: center;
       justify-content: center;
       position: relative;
+    }
+
+    /* Warning Gate Overlay */
+    .video-gate {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.96);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .gate-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fcd34d;
+      margin-bottom: 0.75rem;
+    }
+
+    .gate-msg {
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .gate-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #f8fafc;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: #1e293b;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.15s ease;
+    }
+
+    .gate-checkbox-label:hover {
+      border-color: var(--accent);
+      background: #24344d;
+    }
+
+    .gate-checkbox-label input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--accent);
     }
 
     video {
@@ -353,30 +502,74 @@
 
   <div class="container">
     <header>
+      <div class="top-nav">
+        <a class="gh-btn" href="https://github.com/desktop4070/Optimized-H3-Gen-Times-V1/tree/main" target="_blank" rel="noopener noreferrer">
+          <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+          View Source Repository on GitHub ↗
+        </a>
+      </div>
+
       <h1>MiniMax H3 Video Generation Benchmark</h1>
       <p class="subtitle">
-        Interactive matrix of generation times & video quality across resolutions and durations.
-        Tested with <a href="https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors" target="_blank" rel="noopener noreferrer">Larry's Turbo v4 LoRA</a> (8 Steps, RTX 5070 Ti).
+        Interactive matrix comparing generation times & visual fidelity across resolutions and durations.
       </p>
+
+      <!-- Collapsible Workflow, Hardware Specs & Prompt -->
+      <details class="workflow-details">
+        <summary class="workflow-summary">
+          <span>⚙️ Benchmark Environment, Workflow Settings & Prompt</span>
+          <span style="font-size: 0.8rem;">Click to expand / collapse ▼</span>
+        </summary>
+        <div class="workflow-body">
+          <table class="specs-table">
+            <tbody>
+              <tr><th>OS</th><td>Windows 11 25H2</td></tr>
+              <tr><th>CPU</th><td>Intel Core i9-12900K</td></tr>
+              <tr><th>GPU</th><td>NVIDIA GeForce RTX 5070 Ti 16GB (<code>sm_120</code>)</td></tr>
+              <tr><th>Driver</th><td><code>610.74</code></td></tr>
+              <tr><th>System RAM</th><td>64GB DDR5 @ 5400 MT/s</td></tr>
+              <tr><th>Pagefile.sys</th><td>65536 MB</td></tr>
+              <tr><th>Software Environment</th><td>PyTorch <code>2.13.0+cu130</code> · CUDA <code>13.0</code></td></tr>
+              <tr><th>ComfyUI Launch Flags</th><td><code>--windows-standalone-build --reserve-vram 2</code></td></tr>
+              <tr><th>Diffusion Model</th><td><a href="https://huggingface.co/Comfy-Org/MiniMax-H3/blob/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_fl2va_pruned_int8_convrot.safetensors</code></a></td></tr>
+              <tr><th>Text Encoder</th><td><a href="https://huggingface.co/Comfy-Org/MiniMax-H3/blob/main/text_encoders/qwen3vl_32b_minimax_h3_int8_convrot.safetensors" target="_blank" rel="noopener noreferrer"><code>qwen3vl_32b_minimax_h3_int8_convrot.safetensors</code></a></td></tr>
+              <tr><th>Attention Node</th><td>Comfy Kitchen Attention</td></tr>
+              <tr><th>Turbo LoRA</th><td>larryvrh's <a href="https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_turbo_v4_step600_ema.safetensors</code></a> @ 1.00 strength</td></tr>
+              <tr><th>Sampler / Scheduler</th><td><code>er_sde</code> / <code>sgm_uniform</code></td></tr>
+              <tr><th>Steps</th><td>8</td></tr>
+            </tbody>
+          </table>
+
+          <div class="prompt-label">Prompt Used for All Runs:</div>
+          <div class="prompt-box">integrated_multimodal_description: 
+[Shot 1] Anime. Fantasy. A dense, sun-dappled forest clearing with towering, mossy trees. The young man in peasant clothing (S2) stands near an ancient tree trunk, looking disinterested as he rummages through a worn leather satchel. The young woman in a dirty and torn royal dress (S1) stands close by, gesturing out into the forest with animated frustration and pleading with him to pay attention, but he refuses to make eye contact. The camera pans slowly, tracking the vast wilderness of the forest and the friction between their postures. [Shot 2] The shot cuts to a close-up of the woman (S1). Her face is flushed with indignation, her eyebrows knit tightly, and her mouth forms an expression of sharp, wordless protest as her frustration reaches a breaking point. [Shot 3] The shot cuts to a close-up of a unique looking artifact that was pulled from the satchel, a GeForce RTX 5070 Ti; it visibly shines against his rough glove. [Shot 4] The shot transitions to a wider framing of the pair. The woman (S1) steps forward, clutching the fabric of her dress in an outburst of intense, visible emotion, while the man (S2) replies in a smug manner, snaps his satchel shut, and turns his back to walk away, leaving her standing alone as she watches him go.
+
+overall_soundscape:
+Quiet forest ambience. No other voices are heard.
+
+non_diegetic_music:
+N/A</div>
+        </div>
+      </details>
 
       <div class="legend-bar">
         <div class="legend-item">
           <span class="badge-dot warn"></span>
-          <span><strong>0.1MP:</strong> Unintended resolution (not recommended)</span>
+          <span><strong>0.1MP:</strong> Unintended resolution (glitchy artifacts)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot warn"></span>
-          <span><strong>1s–4s:</strong> Sub-optimal duration (too short for prompt)</span>
+          <span><strong>≤5s:</strong> Short duration (feels rushed)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
-          <span><strong>0.2MP–1.0MP @ 5s–15s:</strong> Recommended benchmark range</span>
+          <span><strong>0.2MP–1.0MP @ 6s–15s:</strong> Recommended benchmark range</span>
         </div>
       </div>
     </header>
 
     <div class="table-container">
-      <table id="matrixTable">
+      <table class="benchmark-grid" id="matrixTable">
         <thead>
           <tr id="headerRow">
             <th class="sticky-col">MP \ Dur</th>
@@ -400,10 +593,18 @@
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
 
-      <div class="modal-warning-banner" id="modalWarning"></div>
-
       <div class="video-container">
-        <video id="modalVideo" controls autoplay loop muted playsinline>
+        <!-- Warning Gate -->
+        <div class="video-gate" id="videoGate">
+          <div class="gate-title" id="gateTitle">⚠️ Content Notice</div>
+          <div class="gate-msg" id="gateMsg"></div>
+          <label class="gate-checkbox-label">
+            <input type="checkbox" id="gateCheckbox" onchange="unlockVideo()">
+            <span>I understand, but I want to see the video anyways.</span>
+          </label>
+        </div>
+
+        <video id="modalVideo" controls loop muted playsinline>
           Your browser does not support the video tag.
         </video>
         <div class="error-box" id="errorBox">
@@ -426,11 +627,11 @@
     const durations = Array.from({ length: 15 }, (_, i) => i + 1);
     const resolutions = ["0.1MP", "0.2MP", "0.3MP", "0.4MP", "0.5MP", "0.6MP", "0.7MP", "0.8MP", "0.9MP", "1.0MP"];
 
-    // Navigation tracking state
+    // Navigation tracking
     let currentMpIndex = -1;
     let currentDuration = -1;
 
-    // Full Benchmark Data (115 runs)
+    // Full Benchmark Data
     const benchmarkData = {
       "0.1MP": { 1: { name: "MiniMax_H3_03684_", time: "13s" }, 2: { name: "MiniMax_H3_03685_", time: "12s" }, 3: { name: "MiniMax_H3_03686_", time: "14s" }, 4: { name: "MiniMax_H3_03687_", time: "17s" }, 5: { name: "MiniMax_H3_03688_", time: "19s" }, 6: { name: "MiniMax_H3_03689_", time: "22s" }, 7: { name: "MiniMax_H3_03690_", time: "25s" }, 8: { name: "MiniMax_H3_03691_", time: "27s" }, 9: { name: "MiniMax_H3_03692_", time: "30s" }, 10: { name: "MiniMax_H3_03693_", time: "33s" }, 11: { name: "MiniMax_H3_03694_", time: "37s" }, 12: { name: "MiniMax_H3_03695_", time: "39s" }, 13: { name: "MiniMax_H3_03696_", time: "41s" }, 14: { name: "MiniMax_H3_03697_", time: "43s" }, 15: { name: "MiniMax_H3_03698_", time: "47s" } },
       "0.2MP": { 1: { name: "MiniMax_H3_03699_", time: "15s" }, 2: { name: "MiniMax_H3_03700_", time: "18s" }, 3: { name: "MiniMax_H3_03701_", time: "21s" }, 4: { name: "MiniMax_H3_03702_", time: "27s" }, 5: { name: "MiniMax_H3_03703_", time: "29s" }, 6: { name: "MiniMax_H3_03704_", time: "37s" }, 7: { name: "MiniMax_H3_03705_", time: "41s" }, 8: { name: "MiniMax_H3_03706_", time: "45s" }, 9: { name: "MiniMax_H3_03707_", time: "54s" }, 10: { name: "MiniMax_H3_03708_", time: "59s" }, 11: { name: "MiniMax_H3_03709_", time: "68s" }, 12: { name: "MiniMax_H3_03710_", time: "74s" }, 13: { name: "MiniMax_H3_03711_", time: "88s" }, 14: { name: "MiniMax_H3_03712_", time: "100s" }, 15: { name: "MiniMax_H3_03713_", time: "98s" } },
@@ -448,7 +649,7 @@
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
-      if (d < 5) {
+      if (d <= 5) {
         th.className = "warn-col";
         th.innerHTML = `${d}s<span class="col-subtext">Too short</span>`;
       } else {
@@ -459,7 +660,7 @@
 
     // Render Table Rows
     const tbody = document.getElementById("tableBody");
-    resolutions.forEach((mp, rIdx) => {
+    resolutions.forEach((mp) => {
       const tr = document.createElement("tr");
       
       const rowHeader = document.createElement("td");
@@ -473,7 +674,7 @@
 
         if (entry) {
           const btn = document.createElement("div");
-          const isSuboptimal = (mp === "0.1MP" || d < 5);
+          const isSuboptimal = (mp === "0.1MP" || d <= 5);
           btn.className = "cell-btn" + (isSuboptimal ? " suboptimal" : "");
           btn.innerHTML = `<span class="gen-time">${entry.time}</span><span class="video-name" title="${entry.name}">${entry.name}</span>`;
           btn.onclick = () => openModal(mp, d, entry.name, entry.time);
@@ -488,13 +689,16 @@
       tbody.appendChild(tr);
     });
 
-    // Modal & Video Controller
+    // Modal & Gate Controller
     const modal = document.getElementById("videoModal");
     const modalVideo = document.getElementById("modalVideo");
-    const modalWarning = document.getElementById("modalWarning");
     const errorBox = document.getElementById("errorBox");
     const errorLink = document.getElementById("errorLink");
     const modalDirectLink = document.getElementById("modalDirectLink");
+    const videoGate = document.getElementById("videoGate");
+    const gateTitle = document.getElementById("gateTitle");
+    const gateMsg = document.getElementById("gateMsg");
+    const gateCheckbox = document.getElementById("gateCheckbox");
 
     function openModal(mp, duration, fullName, time) {
       currentMpIndex = resolutions.indexOf(mp);
@@ -506,18 +710,6 @@
       document.getElementById("modalFilename").textContent = `File: ${fullName}.mp4`;
       document.getElementById("modalTime").textContent = `Gen Time: ${time}`;
       
-      // Recommendation warnings in modal
-      const notes = [];
-      if (mp === "0.1MP") notes.push("0.1MP is an unintended resolution (quality artifacts expected).");
-      if (duration < 5) notes.push(`${duration}s is too short for the prompt to develop.`);
-
-      if (notes.length > 0) {
-        modalWarning.innerHTML = `⚠️ <strong>Notice:</strong> ${notes.join(" ")}`;
-        modalWarning.style.display = "block";
-      } else {
-        modalWarning.style.display = "none";
-      }
-
       modalDirectLink.href = videoUrl;
       errorLink.href = videoUrl;
       errorBox.style.display = "none";
@@ -530,9 +722,37 @@
 
       modalVideo.src = videoUrl;
       modalVideo.load();
-      modalVideo.play().catch(() => {});
+
+      // Reset checkbox
+      gateCheckbox.checked = false;
+
+      // Warnings
+      let warnings = [];
+      if (mp === "0.1MP") {
+        warnings.push("<strong>0.1MP</strong> has glitchy artifacts and is not recommended for H3.");
+      }
+      if (duration <= 5) {
+        warnings.push("<strong>≤5s videos</strong> look fine visually, but feel rushed and too fast-paced for the prompt.");
+      }
+
+      if (warnings.length > 0) {
+        gateTitle.textContent = mp === "0.1MP" ? "⚠️ Not Recommended Resolution" : "ℹ️ Short Duration Notice";
+        gateMsg.innerHTML = warnings.join("<br><br>");
+        videoGate.style.display = "flex";
+        modalVideo.pause();
+      } else {
+        videoGate.style.display = "none";
+        modalVideo.play().catch(() => {});
+      }
       
       modal.classList.add("active");
+    }
+
+    function unlockVideo() {
+      if (gateCheckbox.checked) {
+        videoGate.style.display = "none";
+        modalVideo.play().catch(() => {});
+      }
     }
 
     function closeModal() {
@@ -540,18 +760,19 @@
       modalVideo.pause();
       modalVideo.removeAttribute("src");
       modalVideo.load();
+      videoGate.style.display = "none";
+      gateCheckbox.checked = false;
       currentMpIndex = -1;
       currentDuration = -1;
     }
 
-    // Arrow Key Navigation Logic
+    // Arrow Key Navigation
     function navigate(deltaMp, deltaDur) {
       if (!modal.classList.contains("active") || currentMpIndex === -1) return;
 
       let nextMpIdx = currentMpIndex;
       let nextDur = currentDuration;
 
-      // Handle Left / Right (Duration)
       if (deltaDur !== 0) {
         const targetDur = currentDuration + deltaDur;
         const currentMp = resolutions[currentMpIndex];
@@ -560,7 +781,6 @@
         }
       }
 
-      // Handle Up / Down (Resolution)
       if (deltaMp !== 0) {
         const targetMpIdx = currentMpIndex + deltaMp;
         if (targetMpIdx >= 0 && targetMpIdx < resolutions.length) {
@@ -578,7 +798,6 @@
       }
     }
 
-    // Keyboard Shortcuts
     window.addEventListener("keydown", (e) => {
       if (!modal.classList.contains("active")) return;
 
