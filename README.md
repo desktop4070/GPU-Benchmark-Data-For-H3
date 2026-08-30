@@ -2,7 +2,7 @@
 
 Testing generation times, visual quality, and prompt adherence across resolutions and durations (0.1-1.0MP / 1-15s).
 
-**Live Interactive Grid:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
+**Gen Time Chart:** [View Web App](https://desktop4070.github.io/Optimized-H3-Gen-Times-V1/)
 
 ---
 
