@@ -22,11 +22,11 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      padding: 2.5rem 1.5rem;
+      padding: 2rem 1.5rem;
     }
 
     .container {
-      max-width: 1720px;
+      max-width: min(96vw, 2400px);
       margin: 0 auto;
     }
 
@@ -81,7 +81,7 @@
 
     /* Workflow Dropdown Accordion */
     .workflow-details {
-      max-width: 1100px;
+      max-width: 1400px;
       margin: 0 auto 2rem auto;
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -201,6 +201,7 @@
       border-radius: 14px;
       border: 1px solid var(--border);
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      width: 100%;
     }
 
     table.benchmark-grid {
@@ -212,16 +213,16 @@
     }
 
     table.benchmark-grid th, table.benchmark-grid td {
-      padding: 12px 4px;
+      padding: 10px 4px;
       border: 1px solid var(--border);
-      min-width: 90px;
+      min-width: 78px;
     }
 
     table.benchmark-grid th {
       background: #0f172a;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       position: sticky;
       top: 0;
       z-index: 1;
@@ -246,6 +247,7 @@
       font-weight: normal;
       color: #94a3b8;
       opacity: 0.85;
+      margin-top: 2px;
     }
 
     /* Sticky Row Headers */
@@ -255,9 +257,10 @@
       background: #141d2e;
       font-weight: bold;
       color: var(--accent);
-      font-size: 1rem;
+      font-size: 0.95rem;
       z-index: 3;
-      min-width: 110px;
+      min-width: 100px;
+      width: 100px;
     }
 
     td.sticky-col.unintended-row {
@@ -286,13 +289,13 @@
       transition: all 0.15s ease;
     }
 
-    /* Tier 1: Recommended (0.2MP+ @ 7s–15s) */
+    /* Tier 1: Recommended (0.2MP+ @ 7 sec–15 sec) */
     .cell-btn.tier-rec {
       background: rgba(56, 189, 248, 0.06);
       border: 1px solid rgba(56, 189, 248, 0.28);
     }
     .cell-btn.tier-rec .gen-time {
-      font-size: 1.28rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #38bdf8;
       letter-spacing: -0.3px;
@@ -303,7 +306,7 @@
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
     }
 
-    /* Tier 2: Short Duration (≤6s) */
+    /* Tier 2: Short Duration (≤6 sec) */
     .cell-btn.tier-short {
       background: rgba(100, 116, 139, 0.08);
       border: 1px dashed rgba(148, 163, 184, 0.3);
@@ -344,7 +347,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 82px;
+      max-width: 90%;
     }
 
     .empty-cell {
@@ -663,11 +666,11 @@ N/A</div>
         </div>
         <div class="legend-item">
           <span class="badge-dot short"></span>
-          <span><strong>≤6s:</strong> Short duration (Too short for this prompt)</span>
+          <span><strong>≤6 sec:</strong> Short duration (Too short for this prompt)</span>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
-          <span><strong>0.2MP–1.0MP @ 7s–15s:</strong> Recommended range for this benchmark</span>
+          <span><strong>0.2MP–1.0MP @ 7 sec–15 sec:</strong> Recommended range for this benchmark</span>
         </div>
       </div>
     </header>
@@ -719,7 +722,7 @@ N/A</div>
               </label>
               <label class="gate-checkbox-label" id="labelDismissShort" style="display: none;">
                 <input type="checkbox" id="checkDismissShort">
-                <span>Don't show this message again for &le; 6s videos</span>
+                <span>Don't show this message again for &le; 6 sec videos</span>
               </label>
             </div>
           </div>
@@ -765,16 +768,16 @@ N/A</div>
       "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" } }
     };
 
-    // Render Table Header with Distinct Column Accents
+    // Render Table Header with Distinct Column Accents & "sec" label
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
       if (d <= 6) {
         th.className = "short-col";
-        th.innerHTML = `${d}s<span class="col-subtext">Too short</span>`;
+        th.innerHTML = `${d} sec<span class="col-subtext">Too short</span>`;
       } else {
         th.className = "rec-col";
-        th.innerHTML = `${d}s`;
+        th.innerHTML = `${d} sec`;
       }
       headerRow.appendChild(th);
     });
@@ -842,14 +845,12 @@ N/A</div>
       const h = modalVideo.videoHeight;
       const dur = modalVideo.duration;
       
-      // Clean pixel resolution without fractional MP
       if (w && h) {
         modalRes.textContent = `${w} × ${h}`;
       } else {
         modalRes.textContent = "Unknown";
       }
 
-      // Clean frame count without fractional seconds
       if (dur && !isNaN(dur)) {
         const frames = Math.round(dur * 24);
         modalFrames.textContent = `${frames} frames`;
@@ -864,7 +865,7 @@ N/A</div>
 
       const videoUrl = getVideoUrl(fullName);
       
-      document.getElementById("modalTitle").textContent = `${mp} @ ${duration}s Duration`;
+      document.getElementById("modalTitle").textContent = `${mp} @ ${duration} sec Duration`;
       document.getElementById("modalFilename").textContent = `File: ${fullName}.mp4`;
       modalGenTime.textContent = time;
       modalRes.textContent = "Detecting...";
@@ -880,7 +881,6 @@ N/A</div>
         errorBox.style.display = "block";
       };
 
-      // Always unmuted
       modalVideo.muted = false;
       modalVideo.src = videoUrl;
       modalVideo.load();
@@ -898,7 +898,7 @@ N/A</div>
         show01Option = true;
       }
       if (duration <= 6 && !dismissShort) {
-        warnings.push("<strong>≤6s videos</strong> are fine for certain prompts, but is too short for this specific prompt.");
+        warnings.push("<strong>≤6 sec videos</strong> are fine for certain prompts, but is too short for this specific prompt.");
         showShortOption = true;
       }
 
@@ -924,7 +924,6 @@ N/A</div>
     function startVideoWithAudio() {
       modalVideo.muted = false;
       modalVideo.play().catch(err => {
-        // Log error only - NEVER mute the video
         console.log("Playback interaction pending:", err);
       });
     }
