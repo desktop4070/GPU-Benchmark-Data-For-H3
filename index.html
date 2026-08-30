@@ -897,7 +897,14 @@ N/A</div>
       }
 
       if (warnings.length > 0) {
-        gateTitle.textContent = mp === "0.1MP" ? "Not Recommended Resolution" : "Short Video Notice";
+        if (show01Option && showShortOption) {
+          gateTitle.textContent = "Resolution & Duration Notice";
+        } else if (show01Option) {
+          gateTitle.textContent = "Not Recommended Resolution";
+        } else {
+          gateTitle.textContent = "Short Video Notice";
+        }
+
         gateMsg.innerHTML = warnings.join("<br><br>");
 
         labelDismiss01.style.display = show01Option ? "flex" : "none";
