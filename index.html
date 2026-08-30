@@ -878,7 +878,7 @@ N/A</div>
         errorBox.style.display = "block";
       };
 
-      // Default unmuted volume
+      // Always unmuted
       modalVideo.muted = false;
       modalVideo.src = videoUrl;
       modalVideo.load();
@@ -915,6 +915,17 @@ N/A</div>
         videoGate.style.display = "none";
         startVideoWithAudio();
       }
+      
+      modal.classList.add("active");
+    }
+
+    function startVideoWithAudio() {
+      modalVideo.muted = false;
+      modalVideo.play().catch(err => {
+        // Log error only - NEVER mute the video
+        console.log("Playback interaction pending:", err);
+      });
+    }
       
       modal.classList.add("active");
     }
