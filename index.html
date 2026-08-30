@@ -662,7 +662,7 @@ N/A</div>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
 
-      <!-- Stats Bar: Actual Resolution, Actual Frames, and Big Gen Time -->
+      <!-- Stats Bar: Clean Resolution, Clean Frame Count, and Big Gen Time -->
       <div class="modal-stats-bar">
         <div class="stat-badge highlight">⏱️ Gen Time: <strong id="modalGenTime">-</strong></div>
         <div class="stat-badge">📐 Actual Res: <strong id="modalRes">Detecting...</strong></div>
@@ -792,22 +792,23 @@ N/A</div>
     const checkDismiss01 = document.getElementById("checkDismiss01");
     const checkDismissShort = document.getElementById("checkDismissShort");
 
-    // Dynamic resolution and frame metadata loader
+    // Dynamic resolution and frame metadata loader (Clean output)
     modalVideo.onloadedmetadata = () => {
       const w = modalVideo.videoWidth;
       const h = modalVideo.videoHeight;
       const dur = modalVideo.duration;
       
+      // Clean pixel resolution without fractional MP
       if (w && h) {
-        modalRes.textContent = `${w} × ${h} (${((w * h) / 1000000).toFixed(2)} MP)`;
+        modalRes.textContent = `${w} × ${h}`;
       } else {
         modalRes.textContent = "Unknown";
       }
 
+      // Clean frame count without fractional seconds
       if (dur && !isNaN(dur)) {
-        // 24 FPS is standard export frame rate
         const frames = Math.round(dur * 24);
-        modalFrames.textContent = `${frames} frames (${dur.toFixed(1)}s @ 24fps)`;
+        modalFrames.textContent = `${frames} frames`;
       } else {
         modalFrames.textContent = "Unknown";
       }
@@ -835,13 +836,12 @@ N/A</div>
         errorBox.style.display = "block";
       };
 
-      // Set audio unmuted at 80% volume
+      // Default unmuted volume
       modalVideo.muted = false;
-      modalVideo.volume = 0.8;
       modalVideo.src = videoUrl;
       modalVideo.load();
 
-      // Check Saved Dismiss Preferences from LocalStorage
+      // Check Saved Dismiss Preferences
       const dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
       const dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
 
@@ -878,7 +878,6 @@ N/A</div>
     }
 
     function unlockVideo() {
-      // Save any checked preferences
       if (checkDismiss01.checked) {
         localStorage.setItem("h3_dismiss_01mp", "true");
       }
@@ -892,9 +891,8 @@ N/A</div>
 
     function startVideoWithAudio() {
       modalVideo.muted = false;
-      modalVideo.volume = 0.8;
       modalVideo.play().catch(() => {
-        // Fallback for browsers that require strict muted autoplay
+        // Fallback for strict browser policies
         modalVideo.muted = true;
         modalVideo.play().catch(() => {});
       });
