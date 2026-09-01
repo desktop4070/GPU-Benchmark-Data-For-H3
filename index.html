@@ -15,6 +15,8 @@
       --accent-hover: #0284c7;
       --success: #10b981;
       --unintended: #d4884f;
+      --comfy: #c084fc;
+      --comfy-border: rgba(192, 132, 252, 0.4);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -219,7 +221,7 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 1.4rem;
+      gap: 1rem 1.4rem;
       margin-bottom: 1.4rem;
       font-size: 0.94rem;
     }
@@ -243,6 +245,7 @@
     .badge-dot.unintended { background: var(--unintended); box-shadow: 0 0 8px var(--unintended); }
     .badge-dot.short { background: #94a3b8; box-shadow: 0 0 6px #94a3b8; }
     .badge-dot.rec { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+    .badge-dot.comfy { background: #c084fc; box-shadow: 0 0 10px #c084fc; }
 
     /* Benchmark Table */
     .table-container {
@@ -351,6 +354,7 @@
       letter-spacing: -0.4px;
     }
 
+    /* Tier Styles */
     .cell-btn.tier-rec {
       background: rgba(56, 189, 248, 0.08);
       border: 1px solid rgba(56, 189, 248, 0.35);
@@ -364,6 +368,22 @@
       border: 1px solid #38bdf8 !important;
       background: rgba(56, 189, 248, 0.25) !important;
       box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .cell-btn.tier-comfy {
+      background: rgba(192, 132, 252, 0.1);
+      border: 1px solid var(--comfy-border);
+    }
+    .cell-btn.tier-comfy .gen-time {
+      font-size: clamp(1.25rem, 1.18vw, 1.55rem);
+      font-weight: 800;
+      color: #d8b4fe;
+    }
+    .cell-btn.tier-comfy:hover {
+      border: 1px solid #c084fc !important;
+      background: rgba(192, 132, 252, 0.25) !important;
+      box-shadow: 0 0 14px rgba(192, 132, 252, 0.55);
       transform: translateY(-1px);
     }
 
@@ -531,6 +551,17 @@
     }
     .stat-badge.highlight strong {
       color: #38bdf8;
+      font-size: 1.15rem;
+    }
+
+    .stat-badge.highlight-comfy {
+      background: rgba(192, 132, 252, 0.15);
+      border-color: var(--comfy);
+      font-size: 1.05rem;
+      color: #d8b4fe;
+    }
+    .stat-badge.highlight-comfy strong {
+      color: #c084fc;
       font-size: 1.15rem;
     }
 
@@ -787,7 +818,7 @@
               <tr><th>Video VAE</th><td><a href="https://huggingface.co/Comfy-Org/MiniMax-H3/blob/main/vae/minimax_h3_video_vae_fp16.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_video_vae_fp16.safetensors</code></a></td></tr>
               <tr><th>Audio VAE</th><td><a href="https://huggingface.co/Comfy-Org/MiniMax-H3/blob/main/vae/minimax_h3_audio_vae_fp32.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_audio_vae_fp32.safetensors</code></a></td></tr>
               <tr><th>Attention Node</th><td>Comfy Kitchen Attention</td></tr>
-              <tr><th>Turbo LoRA</th><td>larryvrh's <a href="https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_turbo_v4_step600_ema.safetensors</code></a> @ 1.00 strength</td></tr>
+              <tr><th>Turbo LoRA</th><td>larryvrh's <a href="https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors" target="_blank" rel="noopener noreferrer"><code>minimax_h3_turbo_v4_step600_ema.safetensors</code></a> (Cyan) · Comfy Version (Purple) @ 1.00 strength</td></tr>
               <tr><th>Sampler / Scheduler</th><td><code>er_sde</code> / <code>sgm_uniform</code></td></tr>
               <tr><th>Steps</th><td>8</td></tr>
             </tbody>
@@ -816,7 +847,11 @@ N/A</div>
         </div>
         <div class="legend-item">
           <span class="badge-dot rec"></span>
-          <span><strong>0.2MP–1.0MP @ 8 sec–15 sec:</strong> Recommended range for this prompt</span>
+          <span><strong>Cyan:</strong> Recommended range (larryvrh Turbo LoRA)</span>
+        </div>
+        <div class="legend-item">
+          <span class="badge-dot comfy"></span>
+          <span><strong>Purple:</strong> Generated with the Comfy version of the larryvrh lora (Less VRAM intensive)</span>
         </div>
       </div>
     </header>
@@ -848,9 +883,10 @@ N/A</div>
 
       <!-- Instant Stats Bar -->
       <div class="modal-stats-bar">
-        <div class="stat-badge highlight">Gen Time: <strong id="modalGenTime">-</strong></div>
+        <div class="stat-badge highlight" id="modalGenTimeBadge">Gen Time: <strong id="modalGenTime">-</strong></div>
         <div class="stat-badge">Resolution: <strong id="modalRes">-</strong></div>
         <div class="stat-badge">Frame count: <strong id="modalFrames">-</strong></div>
+        <div class="stat-badge" id="modalLoraBadge">LoRA: <strong id="modalLora">larryvrh v4</strong></div>
       </div>
 
       <div class="video-container">
@@ -907,7 +943,7 @@ N/A</div>
 
   <script>
     const RESOLUTION_MAP = {
-      "0.1MP": "416 × 224",
+      "0.1MP": "416 × 256",
       "0.2MP": "608 × 352",
       "0.3MP": "736 × 416",
       "0.4MP": "864 × 480",
@@ -931,6 +967,7 @@ N/A</div>
     let currentMpIndex = -1;
     let currentDuration = -1;
     let currentActiveRawTime = "";
+    let currentLoraType = "larryvrh";
     let dismiss01 = localStorage.getItem("h3_dismiss_01mp") === "true";
     let dismissShort = localStorage.getItem("h3_dismiss_short") === "true";
     let timeFormat = localStorage.getItem("h3_time_format") || "seconds"; // 'seconds' or 'minutes'
@@ -943,11 +980,11 @@ N/A</div>
       "0.4MP": { 1: { name: "MiniMax_H3_03729_", time: "20s" }, 2: { name: "MiniMax_H3_03730_", time: "25s" }, 3: { name: "MiniMax_H3_03731_", time: "32s" }, 4: { name: "MiniMax_H3_03732_", time: "48s" }, 5: { name: "MiniMax_H3_03733_", time: "57s" }, 6: { name: "MiniMax_H3_03734_", time: "75s" }, 7: { name: "MiniMax_H3_03735_", time: "84s" }, 8: { name: "MiniMax_H3_03736_", time: "98s" }, 9: { name: "MiniMax_H3_03737_", time: "120s" }, 10: { name: "MiniMax_H3_03738_", time: "132s" }, 11: { name: "MiniMax_H3_03739_", time: "156s" }, 12: { name: "MiniMax_H3_03740_", time: "169s" }, 13: { name: "MiniMax_H3_03741_", time: "196s" }, 14: { name: "MiniMax_H3_03742_", time: "210s" }, 15: { name: "MiniMax_H3_03743_", time: "224s" } },
       "0.5MP": { 1: { name: "MiniMax_H3_03744_", time: "23s" }, 2: { name: "MiniMax_H3_03745_", time: "30s" }, 3: { name: "MiniMax_H3_03746_", time: "39s" }, 4: { name: "MiniMax_H3_03747_", time: "58s" }, 5: { name: "MiniMax_H3_03748_", time: "70s" }, 6: { name: "MiniMax_H3_03749_", time: "97s" }, 7: { name: "MiniMax_H3_03750_", time: "110s" }, 8: { name: "MiniMax_H3_03751_", time: "125s" }, 9: { name: "MiniMax_H3_03752_", time: "154s" }, 10: { name: "MiniMax_H3_03753_", time: "169s" }, 11: { name: "MiniMax_H3_03754_", time: "202s" }, 12: { name: "MiniMax_H3_03755_", time: "219s" }, 13: { name: "MiniMax_H3_03756_", time: "255s" }, 14: { name: "MiniMax_H3_03757_", time: "275s" }, 15: { name: "MiniMax_H3_03758_", time: "293s" } },
       "0.6MP": { 1: { name: "MiniMax_H3_03759_", time: "26s" }, 2: { name: "MiniMax_H3_03760_", time: "36s" }, 3: { name: "MiniMax_H3_03761_", time: "48s" }, 4: { name: "MiniMax_H3_03762_", time: "73s" }, 5: { name: "MiniMax_H3_03763_", time: "92s" }, 6: { name: "MiniMax_H3_03764_", time: "123s" }, 7: { name: "MiniMax_H3_03765_", time: "141s" }, 8: { name: "MiniMax_H3_03766_", time: "159s" }, 9: { name: "MiniMax_H3_03767_", time: "201s" }, 10: { name: "MiniMax_H3_03768_", time: "220s" }, 11: { name: "MiniMax_H3_03769_", time: "264s" }, 12: { name: "MiniMax_H3_03770_", time: "289s" }, 13: { name: "MiniMax_H3_03801_", time: "340s" }, 14: { name: "MiniMax_H3_03806_", time: "367s" }, 15: { name: "MiniMax_H3_03807_", time: "392s" } },
-      "0.7MP": { 1: { name: "MiniMax_H3_03771_", time: "29s" }, 2: { name: "MiniMax_H3_03772_", time: "40s" }, 3: { name: "MiniMax_H3_03773_", time: "54s" }, 4: { name: "MiniMax_H3_03774_", time: "88s" }, 5: { name: "MiniMax_H3_03775_", time: "105s" }, 6: { name: "MiniMax_H3_03776_", time: "145s" }, 7: { name: "MiniMax_H3_03777_", time: "167s" }, 8: { name: "MiniMax_H3_03778_", time: "189s" }, 9: { name: "MiniMax_H3_03779_", time: "238s" }, 10: { name: "MiniMax_H3_03780_", time: "260s" }, 11: { name: "MiniMax_H3_03802_", time: "317s" }, 12: { name: "MiniMax_H3_03808_", time: "347s" }, 13: { name: "MiniMax_H3_03812_", time: "448s" }, 14: { name: "MiniMax_H3_03813_", time: "579s" }, 15: { name: "MiniMax_H3_03896_", time: "474s" } },
-      "0.8MP": { 1: { name: "MiniMax_H3_03781_", time: "32s" }, 2: { name: "MiniMax_H3_03782_", time: "47s" }, 3: { name: "MiniMax_H3_03783_", time: "62s" }, 4: { name: "MiniMax_H3_03784_", time: "102s" }, 5: { name: "MiniMax_H3_03785_", time: "123s" }, 6: { name: "MiniMax_H3_03786_", time: "169s" }, 7: { name: "MiniMax_H3_03787_", time: "195s" }, 8: { name: "MiniMax_H3_03788_", time: "222s" }, 9: { name: "MiniMax_H3_03803_", time: "280s" }, 10: { name: "MiniMax_H3_03814_", time: "323s" }, 11: { name: "MiniMax_H3_03815_", time: "404s" }, 12: { name: "MiniMax_H3_03816_", time: "441s" }, 13: { name: "MiniMax_H3_03837_", time: "1047s" }, 14: { name: "MiniMax_H3_03838_", time: "1179s" } },
-      "0.9MP": { 1: { name: "MiniMax_H3_03789_", time: "37s" }, 2: { name: "MiniMax_H3_03790_", time: "55s" }, 3: { name: "MiniMax_H3_03791_", time: "73s" }, 4: { name: "MiniMax_H3_03792_", time: "123s" }, 5: { name: "MiniMax_H3_03793_", time: "149s" }, 6: { name: "MiniMax_H3_03794_", time: "206s" }, 7: { name: "MiniMax_H3_03804_", time: "239s" }, 8: { name: "MiniMax_H3_03817_", time: "295s" }, 9: { name: "MiniMax_H3_03818_", time: "362s" }, 10: { name: "MiniMax_H3_03819_", time: "423s" }, 11: { name: "MiniMax_H3_03820_", time: "642s" } },
-      "0.98MP": { 1: { name: "MiniMax_H3_03824_", time: "84s" }, 2: { name: "MiniMax_H3_03825_", time: "66s" }, 3: { name: "MiniMax_H3_03826_", time: "95s" }, 4: { name: "MiniMax_H3_03827_", time: "148s" }, 5: { name: "MiniMax_H3_03828_", time: "176s" }, 6: { name: "MiniMax_H3_03829_", time: "242s" }, 7: { name: "MiniMax_H3_03830_", time: "282s" }, 8: { name: "MiniMax_H3_03831_", time: "320s" }, 9: { name: "MiniMax_H3_03832_", time: "405s" }, 10: { name: "MiniMax_H3_03833_", time: "466s" }, 11: { name: "MiniMax_H3_03834_", time: "3888s" } },
-      "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" }, 8: { name: "MiniMax_H3_03821_", time: "326s" }, 9: { name: "MiniMax_H3_03822_", time: "423s" }, 10: { name: "MiniMax_H3_03823_", time: "518s" }, 11: { name: "MiniMax_H3_03898_", time: "549s" } }
+      "0.7MP": { 1: { name: "MiniMax_H3_03771_", time: "29s" }, 2: { name: "MiniMax_H3_03772_", time: "40s" }, 3: { name: "MiniMax_H3_03773_", time: "54s" }, 4: { name: "MiniMax_H3_03774_", time: "88s" }, 5: { name: "MiniMax_H3_03775_", time: "105s" }, 6: { name: "MiniMax_H3_03776_", time: "145s" }, 7: { name: "MiniMax_H3_03777_", time: "167s" }, 8: { name: "MiniMax_H3_03778_", time: "189s" }, 9: { name: "MiniMax_H3_03779_", time: "238s" }, 10: { name: "MiniMax_H3_03780_", time: "260s" }, 11: { name: "MiniMax_H3_03802_", time: "317s" }, 12: { name: "MiniMax_H3_03808_", time: "347s" }, 13: { name: "MiniMax_H3_03812_", time: "448s" }, 14: { name: "MiniMax_H3_03813_", time: "579s" }, 15: { name: "MiniMax_H3_03968_", time: "487s", lora: "comfy" } },
+      "0.8MP": { 1: { name: "MiniMax_H3_03781_", time: "32s" }, 2: { name: "MiniMax_H3_03782_", time: "47s" }, 3: { name: "MiniMax_H3_03783_", time: "62s" }, 4: { name: "MiniMax_H3_03784_", time: "102s" }, 5: { name: "MiniMax_H3_03785_", time: "123s" }, 6: { name: "MiniMax_H3_03786_", time: "169s" }, 7: { name: "MiniMax_H3_03787_", time: "195s" }, 8: { name: "MiniMax_H3_03788_", time: "222s" }, 9: { name: "MiniMax_H3_03803_", time: "280s" }, 10: { name: "MiniMax_H3_03814_", time: "323s" }, 11: { name: "MiniMax_H3_03815_", time: "404s" }, 12: { name: "MiniMax_H3_03816_", time: "441s" }, 13: { name: "MiniMax_H3_03978_", time: "492s", lora: "comfy" }, 14: { name: "MiniMax_H3_03979_", time: "552s", lora: "comfy" }, 15: { name: "MiniMax_H3_03980_", time: "611s", lora: "comfy" } },
+      "0.9MP": { 1: { name: "MiniMax_H3_03789_", time: "37s" }, 2: { name: "MiniMax_H3_03790_", time: "55s" }, 3: { name: "MiniMax_H3_03791_", time: "73s" }, 4: { name: "MiniMax_H3_03792_", time: "123s" }, 5: { name: "MiniMax_H3_03793_", time: "149s" }, 6: { name: "MiniMax_H3_03794_", time: "206s" }, 7: { name: "MiniMax_H3_03804_", time: "239s" }, 8: { name: "MiniMax_H3_03817_", time: "295s" }, 9: { name: "MiniMax_H3_03818_", time: "362s" }, 10: { name: "MiniMax_H3_03819_", time: "423s" }, 11: { name: "MiniMax_H3_03820_", time: "642s" }, 12: { name: "MiniMax_H3_03973_", time: "543s", lora: "comfy" } },
+      "0.98MP": { 1: { name: "MiniMax_H3_03824_", time: "84s" }, 2: { name: "MiniMax_H3_03825_", time: "66s" }, 3: { name: "MiniMax_H3_03826_", time: "95s" }, 4: { name: "MiniMax_H3_03827_", time: "148s" }, 5: { name: "MiniMax_H3_03828_", time: "176s" }, 6: { name: "MiniMax_H3_03829_", time: "242s" }, 7: { name: "MiniMax_H3_03830_", time: "282s" }, 8: { name: "MiniMax_H3_03831_", time: "320s" }, 9: { name: "MiniMax_H3_03832_", time: "405s" }, 10: { name: "MiniMax_H3_03833_", time: "466s" }, 11: { name: "MiniMax_H3_03977_", time: "547s", lora: "comfy" }, 12: { name: "MiniMax_H3_03976_", time: "586s", lora: "comfy" } },
+      "1.0MP": { 1: { name: "MiniMax_H3_03795_", time: "41s" }, 2: { name: "MiniMax_H3_03796_", time: "61s" }, 3: { name: "MiniMax_H3_03797_", time: "87s" }, 4: { name: "MiniMax_H3_03798_", time: "139s" }, 5: { name: "MiniMax_H3_03799_", time: "170s" }, 6: { name: "MiniMax_H3_03800_", time: "237s" }, 7: { name: "MiniMax_H3_03805_", time: "275s" }, 8: { name: "MiniMax_H3_03821_", time: "326s" }, 9: { name: "MiniMax_H3_03822_", time: "423s" }, 10: { name: "MiniMax_H3_03823_", time: "518s" }, 11: { name: "MiniMax_H3_03898_", time: "549s", lora: "comfy" }, 12: { name: "MiniMax_H3_03975_", time: "625s", lora: "comfy" } }
     };
 
     function formatTime(timeStr, mode) {
@@ -998,7 +1035,7 @@ N/A</div>
       });
     });
 
-    // Render Table Header (<= 7s is short, >= 8s is recommended)
+    // Render Table Header
     const headerRow = document.getElementById("headerRow");
     durations.forEach(d => {
       const th = document.createElement("th");
@@ -1012,7 +1049,7 @@ N/A</div>
       headerRow.appendChild(th);
     });
 
-    // Render Table Rows in single fragment pass
+    // Render Table Rows
     const tbody = document.getElementById("tableBody");
     const fragment = document.createDocumentFragment();
 
@@ -1029,9 +1066,17 @@ N/A</div>
         const entry = benchmarkData[mp]?.[d];
 
         if (entry) {
-          const tierClass = mp === "0.1MP" ? "tier-unintended" : (d <= 7 ? "tier-short" : "tier-rec");
+          let tierClass = "tier-rec";
+          if (entry.lora === "comfy") {
+            tierClass = "tier-comfy";
+          } else if (mp === "0.1MP") {
+            tierClass = "tier-unintended";
+          } else if (d <= 7) {
+            tierClass = "tier-short";
+          }
+
           td.innerHTML = `
-            <div class="cell-btn ${tierClass}" data-mp="${mp}" data-dur="${d}" data-name="${entry.name}" data-time="${entry.time}">
+            <div class="cell-btn ${tierClass}" data-mp="${mp}" data-dur="${d}" data-name="${entry.name}" data-time="${entry.time}" data-lora="${entry.lora || 'larryvrh'}">
               <span class="gen-time">${formatTime(entry.time, timeFormat)}</span>
               <span class="video-name" title="${entry.name}">${entry.name}</span>
             </div>`;
@@ -1049,8 +1094,8 @@ N/A</div>
     tbody.addEventListener("click", (e) => {
       const btn = e.target.closest(".cell-btn");
       if (!btn) return;
-      const { mp, dur, name, time } = btn.dataset;
-      openModal(mp, parseInt(dur, 10), name, time);
+      const { mp, dur, name, time, lora } = btn.dataset;
+      openModal(mp, parseInt(dur, 10), name, time, lora);
     });
 
     // Modal elements
@@ -1062,6 +1107,9 @@ N/A</div>
     const modalRes = document.getElementById("modalRes");
     const modalFrames = document.getElementById("modalFrames");
     const modalGenTime = document.getElementById("modalGenTime");
+    const modalGenTimeBadge = document.getElementById("modalGenTimeBadge");
+    const modalLoraBadge = document.getElementById("modalLoraBadge");
+    const modalLora = document.getElementById("modalLora");
     const modalTitle = document.getElementById("modalTitle");
     const modalFilename = document.getElementById("modalFilename");
 
@@ -1085,10 +1133,11 @@ N/A</div>
       errorBox.style.display = "block";
     };
 
-    function openModal(mp, duration, fullName, time) {
+    function openModal(mp, duration, fullName, time, lora = "larryvrh") {
       currentMpIndex = resolutions.indexOf(mp);
       currentDuration = duration;
       currentActiveRawTime = time;
+      currentLoraType = lora;
 
       const videoUrl = `./Videos/${fullName}.mp4`;
       
@@ -1097,6 +1146,16 @@ N/A</div>
       modalGenTime.textContent = formatTime(time, timeFormat);
       modalRes.textContent = RESOLUTION_MAP[mp] || "Auto";
       modalFrames.textContent = `${duration * FPS} frames`;
+
+      if (lora === "comfy") {
+        modalGenTimeBadge.className = "stat-badge highlight-comfy";
+        modalLora.textContent = "Comfy LoRA";
+        modalLoraBadge.style.borderColor = "var(--comfy)";
+      } else {
+        modalGenTimeBadge.className = "stat-badge highlight";
+        modalLora.textContent = "larryvrh v4";
+        modalLoraBadge.style.borderColor = "var(--border)";
+      }
       
       modalDirectLink.href = videoUrl;
       errorLink.href = videoUrl;
@@ -1208,6 +1267,7 @@ N/A</div>
       currentMpIndex = -1;
       currentDuration = -1;
       currentActiveRawTime = "";
+      currentLoraType = "larryvrh";
     }
 
     function navigate(deltaMp, deltaDur) {
@@ -1237,7 +1297,7 @@ N/A</div>
       if (nextMpIdx !== currentMpIndex || nextDur !== currentDuration) {
         const mp = resolutions[nextMpIdx];
         const entry = benchmarkData[mp][nextDur];
-        openModal(mp, nextDur, entry.name, entry.time);
+        openModal(mp, nextDur, entry.name, entry.time, entry.lora);
       }
     }
 
