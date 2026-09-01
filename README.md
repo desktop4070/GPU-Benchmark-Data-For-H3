@@ -28,6 +28,7 @@ Testing generation times, visual quality, and prompt adherence across resolution
 | **Audio VAE** | [`minimax_h3_audio_vae_fp32.safetensors`](https://huggingface.co/Comfy-Org/MiniMax-H3/blob/main/vae/minimax_h3_audio_vae_fp32.safetensors) |
 | **Attention Node** | Comfy Kitchen Attention |
 | **Turbo LoRA** | larryvrh's [`minimax_h3_turbo_v4_step600_ema.safetensors`](https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora/blob/main/minimax_h3_turbo_v4_step600_ema.safetensors) @ 1.00 strength |
+| **Turbo LoRA (New)** | Just found this less vram intensive version: larryvrh's [`minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors`](https://huggingface.co/drbaph/MiniMax-H3-Turbo-Lora-ComfyUI/blob/main/minimax_h3_turbo_v4_step600_ema_pruned_comfyui.safetensors) @ 1.00 strength |
 | **Sampler / Scheduler** | `er_sde` / `sgm_uniform` |
 | **Steps** | 8 |
 
